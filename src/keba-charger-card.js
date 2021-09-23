@@ -26,7 +26,7 @@ class ChargerCard extends LitElement {
   }
 
   static async getConfigElement() {
-    return document.createElement('charger-card-editor');
+    return document.createElement('keba-charger-card-editor');
   }
 
   static getStubConfig(hass, entities) {
