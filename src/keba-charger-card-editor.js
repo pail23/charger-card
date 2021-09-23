@@ -16,7 +16,7 @@ export class ChargerCardEditor extends LitElement {
     this._config = config;
 
     if (!this._config.entity) {
-      this._config.entity = this.getEntitiesByType('sensor')[0] || '';
+      this._config.entity = this.getEntitiesByType('binary_sensor')[0] || '';
       fireEvent(this, 'config-changed', { config: this._config });
     }
   }
