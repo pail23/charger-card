@@ -1,2 +1,5 @@
 *.png
 .prettierignore
+.gitignore
+.eslintignore
+keba-charger-card.js
