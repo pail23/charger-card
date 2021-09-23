@@ -1,13 +1,13 @@
-# EV Charger Card
+# Keba Charger Card
 
 [![hacs][hacs-image]][hacs-url]
 [![Buy Me A Coffee][buymeacoffee-image]][buymeacoffee-url]
 
-> EV Charger card for [Home Assistant][home-assistant] Lovelace UI
+> Keba Charger card for [Home Assistant][home-assistant] Lovelace UI
 
 By default, Home Assistant does not provide any card for controlling chargers for electrical vehicles (EVs). This card displays the state and allows to control your charger.
 
-![Preview of charger-card][preview-image]
+![Preview of keba-charger-card][preview-image]
 
 ## Installing
 
@@ -23,17 +23,17 @@ This card is not yet available as default in [HACS][hacs] (Home Assistant Commun
 
 ### Manual
 
-1. Download `charger-card.js` file from the [latest-release].
-2. Put `charger-card.js` file into your `config/www` folder.
-3. Add reference to `charger-card.js` in Lovelace. There are two ways to do that:
-   1. **Using UI:** _Configuration_ → _Lovelace Dashboards_ → _Resources_ → Click Plus button → Set _Url_ as `/local/charger-card.js` → Set _Resource type_ as `JavaScript Module`.
+1. Download `keba-charger-card.js` file from the [latest-release].
+2. Put `keba-charger-card.js` file into your `config/www` folder.
+3. Add reference to `keba-charger-card.js` in Lovelace. There are two ways to do that:
+   1. **Using UI:** _Configuration_ → _Lovelace Dashboards_ → _Resources_ → Click Plus button → Set _Url_ as `/local/keba-charger-card.js` → Set _Resource type_ as `JavaScript Module`.
    2. **Using YAML:** Add following code to `lovelace` section.
       ```yaml
       resources:
-        - url: /local/charger-card.js
+        - url: /local/keba-charger-card.js
           type: module
       ```
-4. Add `custom:charger-card` to Lovelace UI as any other card (using either editor or YAML configuration).
+4. Add `custom:keba-charger-card` to Lovelace UI as any other card (using either editor or YAML configuration).
 
 ## Using the card
 
@@ -52,15 +52,15 @@ _Sorry, there is no support for `actions` and `stats` in visual UI editor yet._
 Typical example of using this card in YAML config would look like this:
 
 ```yaml
-type: 'custom:charger-card'
-entity: sensor.easee_status
+type: 'custom:keba-charger-card'
+entity: binary_sensor.keba_p30_status
 ```
 
 Here is what every option means:
 
 | Name                |   Type    | Default      | Description                                                                                                         |
 | ------------------- | :-------: | ------------ | ------------------------------------------------------------------------------------------------------------------- |
-| `type`              | `string`  | **Required** | `custom:charger-card`                                                                                               |
+| `type`              | `string`  | **Required** | `custom:keba-charger-card`                                                                                          |
 | `entity`            | `string`  | **Required** | An entity_id within the `sensor` domain. Must be the main status of your charger.                                   |
 | `customCardTheme`   | `string`  | Optional     | Select a custom theme of colors, or use "theme_custom" to apply the theme you use in HA                             |
 | `chargerImage`      | `string`  | Anthracite   | Select a charger image from defaults                                                                                |
@@ -144,7 +144,7 @@ MIT © [Tor Magne Johannessen][tmjo]
 
 <!-- Badges -->
 
-[npm-url]: https://npmjs.org/package/charger-card
+[npm-url]: https://npmjs.org/package/keba-charger-card
 [hacs-url]: https://github.com/custom-components/hacs
 [hacs-image]: https://img.shields.io/badge/HACS-Custom-orange.svg
 [buymeacoffee-url]: https://www.buymeacoffee.com/tmjo

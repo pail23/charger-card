@@ -20,7 +20,7 @@ const serverOptions = {
 };
 
 export default {
-  input: 'src/charger-card.js',
+  input: 'src/keba-charger-card.js',
   output: {
     dir: 'dist',
     format: 'es',

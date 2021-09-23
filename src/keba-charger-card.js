@@ -1,6 +1,6 @@
 import { LitElement, html } from 'lit-element';
 import { hasConfigOrEntityChanged, fireEvent } from 'custom-card-helpers';
-import './charger-card-editor';
+import './keba-charger-card-editor';
 import localize from './localize';
 import styles from './styles';
 import * as cconst from './const';
@@ -52,6 +52,32 @@ class ChargerCard extends LitElement {
     // if (this.config.domain === undefined) {
     return cconst.CHARGERDOMAIN;
     // }
+  }
+
+  get status() {
+    const pluggedIn = this.getEntityState(
+      this.getEntity(cconst.ENTITIES.cableLocked)
+    );
+    // console.log(pluggedIn);
+    if (pluggedIn == 'off') {
+      return cconst.CHARGERSTATUS.STANDBY_1;
+    }
+    const chargingState = this.getEntityState(
+      this.getEntity(cconst.ENTITIES.chargingState)
+    );
+    //const chargingStatus = this.getEntity(cconst.ENTITIES.chargingState).attributes['status']; // charging, authorization rejected,
+    //console.log(chargingState);
+    //console.log(chargingStatus);
+    if (chargingState == 'on') {
+      return cconst.CHARGERSTATUS.CHARGING_3;
+    } else {
+      return cconst.CHARGERSTATUS.PAUSED_2;
+    }
+
+    /*
+    READY_4: 'completed',
+    ERROR_5: 'error',
+    CONNECTED_6: 'ready_to_charge',*/
   }
 
   get usedChargerLimit() {
@@ -195,6 +221,7 @@ class ChargerCard extends LitElement {
     const cableLockedPermanently = this.getEntity(
       cconst.ENTITIES.cableLockedPermanently
     );
+    const chargingState = this.getEntity(cconst.ENTITIES.chargingState);
     const basicSchedule = this.getEntity(cconst.ENTITIES.basicSchedule);
     const circuitCurrent = this.getEntity(cconst.ENTITIES.circuitCurrent);
     const costPerKwh = this.getEntity(cconst.ENTITIES.costPerKwh);
@@ -229,6 +256,7 @@ class ChargerCard extends LitElement {
     return {
       cableLocked,
       cableLockedPermanently,
+      chargingState,
       basicSchedule,
       circuitCurrent,
       costPerKwh,
@@ -272,21 +300,22 @@ class ChargerCard extends LitElement {
 
   getEntityAttribute(entity_base, attribute) {
     try {
-      return this.getEntityAttributes(entity_base).attributes[attribute];
+      return entity_base.attributes[attribute];
     } catch (err) {
       return null;
     }
   }
-
+  /**
   getEntityAttributes(entity_base) {
     try {
       return this.hass.states[this.getEntityId(entity_base)].attributes;
     } catch (err) {
       return null;
     }
-  }
+  } */
 
   getStatsDefault(state) {
+    console.log('getStatsDefault ' + state);
     switch (state) {
       case cconst.CHARGERSTATUS.STANDBY_1: {
         return [
@@ -301,9 +330,9 @@ class ChargerCard extends LitElement {
             subtitle: 'Current Limit',
           },
           {
-            entity_id: this.getEntityId(cconst.ENTITIES.cableLockedPermanently),
+            entity_id: this.getEntityId(cconst.ENTITIES.cableLocked),
             unit: '',
-            subtitle: 'Permanently Locked',
+            subtitle: 'Locked',
           },
         ];
       }
@@ -318,11 +347,6 @@ class ChargerCard extends LitElement {
             entity_id: this.getEntityId(cconst.ENTITIES.sessionEnergy),
             unit: 'kWh',
             subtitle: localize('charger_status.sessionEnergy'),
-          },
-          {
-            entity_id: this.getEntityId(cconst.ENTITIES.basicSchedule),
-            unit: '',
-            subtitle: 'Schedule',
           },
           {
             entity_id: this.getEntityId(cconst.ENTITIES.smartCharging),
@@ -376,11 +400,6 @@ class ChargerCard extends LitElement {
             calcValue: this.usedChargerLimit,
             unit: 'A',
             subtitle: 'Current Limit',
-          },
-          {
-            entity_id: this.getEntityId(cconst.ENTITIES.basicSchedule),
-            unit: '',
-            subtitle: 'Schedule',
           },
         ];
       }
@@ -630,7 +649,7 @@ class ChargerCard extends LitElement {
   }
 
   renderName() {
-    const { name, site_name } = this.getAttributes(this.entity);
+    //    const { name, site_name } = this.getAttributes(this.entity);
     if (!this.showName) {
       return html``;
     }
@@ -646,7 +665,7 @@ class ChargerCard extends LitElement {
         @click="${() => this.handleMore()}"
         ?more-info="true"
       >
-        ${site_name} - ${name}
+        Keba P30
       </div>
     `;
   }
@@ -661,13 +680,7 @@ class ChargerCard extends LitElement {
       compactview = '-compact';
     }
 
-    const { state } = this.entity;
-    const { reasonForNoCurrent } = this.getEntities();
-    const localizedStatus = localize(`status.${state}`) || state;
-    let subStatusText =
-      localize(
-        `charger_substatus.${this.getEntityState(reasonForNoCurrent)}`
-      ) || this.getEntityState(reasonForNoCurrent);
+    const localizedStatus = localize(`status.${this.status}`) || this.status;
 
     return html`
       <div
@@ -682,14 +695,6 @@ class ChargerCard extends LitElement {
           .active=${this.requestInProgress}
           size="small"
         ></ha-circular-progress>
-        <div
-          class="status-detail-text${compactview}"
-          alt=${subStatusText}
-          @click="${() => this.handleMore(reasonForNoCurrent)}"
-          ?more-info="true"
-        >
-          ${subStatusText}
-        </div>
       </div>
     `;
   }
@@ -706,10 +711,9 @@ class ChargerCard extends LitElement {
       enableIdleCurrent,
       isEnabled,
       smartCharging,
-      updateAvailable,
-      costPerKwh,
+      //    updateAvailable,
     } = this.getEntities();
-    let updateAvailableState = this.getEntityState(updateAvailable) || 'off';
+    //    let updateAvailableState = this.getEntityState(updateAvailable) || 'off';
     let localizedClickForConfig = localize('common.click_for_config');
 
     return html`
@@ -731,28 +735,6 @@ class ChargerCard extends LitElement {
             )}
             ${this.renderCollapsibleItems(cableLocked, 'Locked')}
             ${this.renderCollapsibleItems(smartCharging, 'Smart Charging')}
-            ${this.renderCollapsibleItems(costPerKwh, 'Energy cost')}
-            ${this.renderCollapsibleItems(updateAvailable, 'Update Available')}
-            ${updateAvailableState === 'on' &&
-            this.entity.state === cconst.CHARGERSTATUS.STANDBY_1
-              ? this.renderCollapsibleServiceItems(
-                  undefined,
-                  'update_firmware',
-                  'Update',
-                  'mdi:file-download',
-                  'Update Firmware'
-                )
-              : ''}
-            ${updateAvailableState === 'on' &&
-            this.entity.state === cconst.CHARGERSTATUS.STANDBY_1
-              ? this.renderCollapsibleServiceItems(
-                  undefined,
-                  'reboot',
-                  'Reboot',
-                  'mdi:restart',
-                  'Reboot'
-                )
-              : ''}
           </div>
         </div>
       </div>
@@ -899,7 +881,7 @@ class ChargerCard extends LitElement {
 
   renderCollapsibleItems(entity, tooltip, round = false) {
     if (entity === null || entity === undefined) {
-      return html``;
+      return html`x`;
     }
 
     let value = this.getEntityState(entity);
@@ -1081,52 +1063,34 @@ class ChargerCard extends LitElement {
       }
       case cconst.CHARGERSTATUS.PAUSED_2: {
         stateButtons = html`
-          ${this.renderToolbarButton('stop', 'hass:stop', 'common.stop')}
+          ${this.renderToolbarButton('disable', 'hass:stop', 'common.stop')}
           ${this.renderToolbarButton(
-            'resume',
+            'enable',
             'hass:play-pause',
             'common.continue'
-          )}
-          ${this.renderToolbarButton(
-            'override_schedule',
-            'hass:motion-play',
-            'common.override'
           )}
         `;
         break;
       }
       case cconst.CHARGERSTATUS.CHARGING_3: {
         stateButtons = html`
-          ${this.renderToolbarButton('pause', 'hass:pause', 'common.pause')}
-          ${this.renderToolbarButton('stop', 'hass:stop', 'common.stop')}
+          ${this.renderToolbarButton('disable', 'hass:stop', 'common.stop')}
         `;
         break;
       }
       case cconst.CHARGERSTATUS.READY_4: {
         stateButtons = html`
-          ${this.renderToolbarButton('stop', 'hass:stop', 'common.stop')}
-          ${this.renderToolbarButton(
-            'override_schedule',
-            'hass:motion-play',
-            'common.override'
-          )}
+          ${this.renderToolbarButton('disable', 'hass:stop', 'common.stop')}
         `;
         break;
       }
       case cconst.CHARGERSTATUS.ERROR_5: {
-        stateButtons = html`
-          ${this.renderToolbarButton('reboot', 'hass:restart', 'common.reboot')}
-        `;
+        stateButtons = html``;
         break;
       }
       case cconst.CHARGERSTATUS.CONNECTED_6: {
         stateButtons = html`
-          ${this.renderToolbarButton('stop', 'hass:stop', 'common.stop')}
-          ${this.renderToolbarButton(
-            'override_schedule',
-            'hass:motion-play',
-            'common.override'
-          )}
+          ${this.renderToolbarButton('disable', 'hass:stop', 'common.stop')}
         `;
         break;
       }
@@ -1167,7 +1131,7 @@ class ChargerCard extends LitElement {
   }
 
   renderCompact() {
-    const { state } = this.entity;
+    const state = this.status; //  this.entity;
     return html`
       <ha-card>
         <div class="preview-compact">
@@ -1188,7 +1152,7 @@ class ChargerCard extends LitElement {
   }
 
   renderFull() {
-    const { state } = this.entity;
+    const state = this.status; //this.entity;
 
     return html`
       <ha-card>
@@ -1289,9 +1253,9 @@ class ChargerCard extends LitElement {
   }
 }
 
-customElements.define('charger-card', ChargerCard);
+customElements.define('keba-charger-card', ChargerCard);
 console.info(
-  `%cCHARGER-CARD ${cconst.VERSION} IS INSTALLED`,
+  `%cKEBA-CHARGER-CARD ${cconst.VERSION} IS INSTALLED`,
   'color: green; font-weight: bold',
   ''
 );
@@ -1299,7 +1263,7 @@ console.info(
 window.customCards = window.customCards || [];
 window.customCards.push({
   preview: true,
-  type: 'charger-card',
+  type: 'keba-charger-card',
   name: localize('common.name'),
   description: localize('common.description'),
 });

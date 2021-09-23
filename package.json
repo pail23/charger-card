@@ -1,8 +1,8 @@
 {
-  "name": "charger-card",
+  "name": "keba-charger-card",
   "version": "0.0.12",
   "description": "Charger card for Home Assistant Lovelace UI",
-  "main": "dist/charger-card.js",
+  "main": "dist/keba-charger-card.js",
   "scripts": {
     "postpublish": "git push --follow-tags",
     "start": "rollup -c --watch",

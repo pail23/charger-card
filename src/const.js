@@ -1,6 +1,6 @@
 export const VERSION = '0.0.12';
 
-export const CHARGERDOMAIN = 'easee';
+export const CHARGERDOMAIN = 'keba';
 export const STATUS_ENTITY_BASE = '_status';
 
 export const CHARGERSTATUS = {
@@ -34,8 +34,9 @@ export const LEDIMAGES = {
 };
 
 export const ENTITIES = {
-  cableLocked: 'binary_sensor.cable_locked',
+  cableLocked: 'binary_sensor.plug', // keba done
   cableLockedPermanently: 'switch.cable_locked_permanently',
+  chargingState: 'binary_sensor.charging_state', // keba done
   basicSchedule: 'binary_sensor.basic_schedule',
   circuitCurrent: 'sensor.circuit_current',
   costPerKwh: 'sensor.cost_per_kwh',
@@ -44,17 +45,17 @@ export const ENTITIES = {
   enableIdleCurrent: 'switch.enable_idle_current',
   inCurrent: 'sensor.current',
   isEnabled: 'switch.is_enabled',
-  maxChargerCurrent: 'sensor.max_charger_limit',
+  maxChargerCurrent: 'sensor.max_current', //keba done
   maxCircuitCurrent: 'sensor.max_circuit_limit',
   offlineCircuitCurrent: 'sensor.offline_circuit_limit',
-  isOnline: 'binary_sensor.online',
+  isOnline: 'binary_sensor.status', //keba done
   outputCurrent: 'sensor.output_limit',
   reasonForNoCurrent: 'sensor.reason_for_no_current',
-  sessionEnergy: 'sensor.session_energy',
+  sessionEnergy: 'sensor.session_energy', //keba done
   energyPerHour: 'sensor.energy_per_hour',
-  energyLifetime: 'sensor.lifetime_energy',
+  energyLifetime: 'sensor.total_energy', //keba done
   smartCharging: 'switch.smart_charging',
-  totalPower: 'sensor.power',
+  totalPower: 'sensor.charging_power', //keba done
   updateAvailable: 'binary_sensor.update_available',
   voltage: 'sensor.voltage',
 };
@@ -67,22 +68,10 @@ export const SERVICES = {
   circuitOfflineCurrent: 'set_charger_circuit_offline_limit',
 };
 
-import imageGeneric from './img/charger_generic_223x302.png';
-import imageAnthracite from './img/charger_anthracite_223x302.png';
-import imageRed from './img/charger_red_223x302.png';
-import imageBlack from './img/charger_black_223x302.png';
-import imageWhite from './img/charger_white_223x302.png';
-import imageDarkblue from './img/charger_darkblue_223x302.png';
+import imageGeneric from './img/keba.png'; //'./img/charger_generic_223x302.png';
 
 export const DEFAULTIMAGE = 'Generic';
-export const CHARGER_IMAGES = [
-  { name: 'Generic', img: imageGeneric },
-  { name: 'Anthracite', img: imageAnthracite },
-  { name: 'Red', img: imageRed },
-  { name: 'Black', img: imageBlack },
-  { name: 'White', img: imageWhite },
-  { name: 'Darkblue', img: imageDarkblue },
-];
+export const CHARGER_IMAGES = [{ name: 'Generic', img: imageGeneric }];
 
 import ledOff from './img/charger_leds_bg.gif';
 import ledWhite2 from './img/charger_leds_white_2.gif';
@@ -94,7 +83,7 @@ import ledBlueFlashing from './img/charger_leds_blue_flashing.gif';
 import ledRedFlashing from './img/charger_leds_red_flashing.gif';
 
 export const ICONS = {
-  'binary_sensor.cable_locked': 'mdi:lock',
+  'binary_sensor.plug': 'mdi:lock',
   'switch.cable_locked_permanently': 'mdi:lock',
   'binary_sensor.basic_schedule': 'mdi:clock-check',
   'sensor.circuit_current': 'mdi:sine-wave',
@@ -105,16 +94,16 @@ export const ICONS = {
   'sensor.offline_circuit_limit': 'mdi:sine-wave',
   'sensor.current': 'mdi:sine-wave',
   'switch.is_enabled': 'mdi:power',
-  'sensor.max_charger_limit': 'mdi:sine-wave',
+  'sensor.max_current': 'mdi:sine-wave',
   'sensor.max_circuit_limit': 'mdi:sine-wave',
-  'binary_sensor.online': 'mdi:wifi',
+  'binary_sensor.status': 'mdi:wifi',
   'sensor.output_limit': 'mdi:sine-wave',
   'sensor.reason_for_no_current': 'mdi:alert-circle',
   'sensor.session_energy': 'mdi:flash',
   'sensor.energy_per_hour': 'mdi:flash',
-  'sensor.lifetime_energy': 'mdi:flash',
+  'sensor.total_energy': 'mdi:flash',
   'switch.smart_charging': 'mdi:auto-fix',
-  'sensor.power': 'mdi:flash',
+  'sensor.charging_power': 'mdi:flash',
   'binary_sensor.update_available': 'mdi:file-download',
   'sensor.voltage': 'mdi:sine-wave',
 };

@@ -148,11 +148,12 @@ export default css`
 
   .charger.led {
     position: relative;
-    top: -175px;
+    top: -167px;
     // position: absolute;
     // top: 95px;
     // left: 245px;
     width: 2px;
+    transform: rotate(90deg);
 
     // border-color: red;
     // border-style: dashed;
@@ -168,6 +169,7 @@ export default css`
     left: 77px;
     top: 22px;
     width: 1.4px;
+    transform: rotate(90deg);
 
     // border-color: red;
     // border-style: dashed;

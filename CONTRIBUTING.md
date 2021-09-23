@@ -31,6 +31,6 @@ Only native speaker can translate to specific language.
    ```sh
    npm start
    ```
-5. Add `http://localhost:5000/charger-card.js` to your Lovelace resources.
+5. Add `http://localhost:5000/keba-charger-card.js` to your Lovelace resources.
 
 Now you can make changes to files in `src` folder. Development server will automatically rebuild on changes. Lovelace will load resource from development server. Refresh the browser to see changes. Make sure cache is cleared or disabled.

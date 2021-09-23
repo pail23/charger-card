@@ -37,67 +37,79 @@ export class ChargerCardEditor extends LitElement {
     return '';
   }
 
-  get _chargerImage(){
+  get _chargerImage() {
     if (this._config) {
       return this._config.chargerImage || cconst.DEFAULTIMAGE;
     }
     return cconst.DEFAULTIMAGE;
   }
 
-  get _customCardTheme(){
+  get _customCardTheme() {
     if (this._config) {
       return this._config.customCardTheme || '';
     }
     return cconst.DEFAULT_CUSTOMCARDTHEME;
-  }  
+  }
 
   get _show_name() {
     if (this._config) {
-      return this._config.show_name !== undefined ? this._config.show_name : true;
+      return this._config.show_name !== undefined
+        ? this._config.show_name
+        : true;
     }
     return true;
   }
-  
+
   get _show_leds() {
     if (this._config) {
-      return this._config.show_leds !== undefined ? this._config.show_leds : true;
+      return this._config.show_leds !== undefined
+        ? this._config.show_leds
+        : true;
     }
     return true;
-  }  
+  }
 
   get _show_status() {
     if (this._config) {
-      return this._config.show_status !== undefined ? this._config.show_status : true;
-      
+      return this._config.show_status !== undefined
+        ? this._config.show_status
+        : true;
     }
     return true;
   }
 
   get _show_toolbar() {
     if (this._config) {
-      return this._config.show_toolbar !== undefined ? this._config.show_toolbar : true;
+      return this._config.show_toolbar !== undefined
+        ? this._config.show_toolbar
+        : true;
     }
     return true;
   }
 
   get _show_stats() {
     if (this._config) {
-      return this._config.show_stats !== undefined ? this._config.show_stats : true;
+      return this._config.show_stats !== undefined
+        ? this._config.show_stats
+        : true;
     }
     return true;
   }
 
   get _show_collapsibles() {
     if (this._config) {
-      return this._config.show_collapsibles !== undefined ? this._config.show_collapsibles : true;
+      return this._config.show_collapsibles !== undefined
+        ? this._config.show_collapsibles
+        : true;
     }
     return true;
   }
 
-
   get _compact_view() {
     if (this._config) {
-      return this._config.compact_view !== undefined ? this._config.compact_view : false;
+      return this._config.compact_view !== undefined
+        ? this._config.compact_view
+        : false;
     }
     return false;
   }
@@ -113,38 +125,64 @@ export class ChargerCardEditor extends LitElement {
       return html``;
     }
 
-    const chargerEntities = this.getEntitiesByType('sensor');
+    const chargerEntities = this.getEntitiesByType('binary_sensor');
 
     return html`
       <div class="card-config">
-      
-        <paper-dropdown-menu label="${localize('editor.entity')}" @value-changed=${this._valueChanged} .configValue=${'entity'}>
-          <paper-listbox slot="dropdown-content" .selected=${chargerEntities.indexOf(this._entity)}>
-            ${chargerEntities.map(entity => {
+
+        <paper-dropdown-menu label="${localize(
+          'editor.entity'
+        )}" @value-changed=${this._valueChanged} .configValue=${'entity'}>
+          <paper-listbox slot="dropdown-content" .selected=${chargerEntities.indexOf(
+            this._entity
+          )}>
+            ${chargerEntities.map((entity) => {
               return html` <paper-item>${entity}</paper-item> `;
             })}
           </paper-listbox>
         </paper-dropdown-menu>
 
-        <paper-dropdown-menu label="${localize('editor.theme')}" @value-changed=${this._valueChanged} .configValue=${'customCardTheme'}>
-          <paper-listbox slot="dropdown-content" selected="${this._customCardTheme}" attr-for-selected="value">
-            ${cconst.CUSTOM_CARD_THEMES.map(customCardTheme => {
-              return html` <paper-item value="${customCardTheme.name}">${customCardTheme.name}</paper-item> `;
+        <paper-dropdown-menu label="${localize(
+          'editor.theme'
+        )}" @value-changed=${
+      this._valueChanged
+    } .configValue=${'customCardTheme'}>
+          <paper-listbox slot="dropdown-content" selected="${
+            this._customCardTheme
+          }" attr-for-selected="value">
+            ${cconst.CUSTOM_CARD_THEMES.map((customCardTheme) => {
+              return html`
+                <paper-item value="${customCardTheme.name}"
+                  >${customCardTheme.name}</paper-item
+                >
+              `;
             })}
           </paper-listbox>
         </paper-dropdown-menu>
 
 
-        <paper-dropdown-menu label="${localize('editor.chargerImage')}" @value-changed=${this._valueChanged} .configValue=${'chargerImage'}>
-          <paper-listbox slot="dropdown-content" selected="${this._chargerImage}" attr-for-selected="value">
-            ${cconst.CHARGER_IMAGES.map(chargerImage => {
-              return html` <paper-item value="${chargerImage.name}">${chargerImage.name}</paper-item> `;
+        <paper-dropdown-menu label="${localize(
+          'editor.chargerImage'
+        )}" @value-changed=${this._valueChanged} .configValue=${'chargerImage'}>
+          <paper-listbox slot="dropdown-content" selected="${
+            this._chargerImage
+          }" attr-for-selected="value">
+            ${cconst.CHARGER_IMAGES.map((chargerImage) => {
+              return html`
+                <paper-item value="${chargerImage.name}"
+                  >${chargerImage.name}</paper-item
+                >
+              `;
             })}
           </paper-listbox>
         </paper-dropdown-menu>
 
 
-        <paper-input label="${localize('editor.customImage')}" .value=${this._customImage} .configValue=${'customImage'} @value-changed=${this._valueChanged}"></paper-input>
+        <paper-input label="${localize('editor.customImage')}" .value=${
+      this._customImage
+    } .configValue=${'customImage'} @value-changed=${
+      this._valueChanged
+    }"></paper-input>
 
         <p class="option">
           <ha-switch
@@ -264,7 +302,7 @@ export class ChargerCardEditor extends LitElement {
 
   _valueChanged(ev) {
     if (!this._config || !this.hass) {
-      console.log("C: no config")
+      console.log('C: no config');
       return;
     }
     const target = ev.target;
@@ -276,7 +314,6 @@ export class ChargerCardEditor extends LitElement {
       if (target.value === '') {
         delete this._config[target.configValue];
       } else {
-        
         this._config = {
           ...this._config,
           [target.configValue]:
@@ -305,4 +342,4 @@ export class ChargerCardEditor extends LitElement {
   }
 }
 
-customElements.define('charger-card-editor', ChargerCardEditor);
+customElements.define('keba-charger-card-editor', ChargerCardEditor);
