@@ -31,7 +31,7 @@ export class ChargerCard extends LitElement {
     return document.createElement('keba-charger-card-editor');
   }
 
-  public static getStubConfig(): object {
+  public static getStubConfig() {
     //const [chargerEntity] = entities.filter(eid => eid.substr(0, eid.indexOf('.')) === 'binary_sensor');
 
     return {
