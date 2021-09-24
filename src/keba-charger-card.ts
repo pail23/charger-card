@@ -60,14 +60,10 @@ export class ChargerCard extends LitElement {
 
   get status(): string {
     const pluggedIn = this.getEntityState(this.getEntity(cconst.ENTITIES.cableLocked));
-    // console.log(pluggedIn);
     if (pluggedIn == 'off') {
       return cconst.CHARGERSTATUS.STANDBY_1;
     }
     const chargingState = this.getEntityState(this.getEntity(cconst.ENTITIES.chargingState));
-    //const chargingStatus = this.getEntity(cconst.ENTITIES.chargingState).attributes['status']; // charging, authorization rejected,
-    //console.log(chargingState);
-    //console.log(chargingStatus);
     if (chargingState == 'on') {
       return cconst.CHARGERSTATUS.CHARGING_3;
     } else {
@@ -80,7 +76,7 @@ export class ChargerCard extends LitElement {
     CONNECTED_6: 'ready_to_charge',*/
   }
 
-  get usedChargerLimit(): number {
+  private get usedChargerLimit(): number {
     const { dynamicChargerCurrent, dynamicCircuitCurrent, maxChargerCurrent, maxCircuitCurrent } = this.getEntities();
     const circuitRatedCurrent = 0; // TODO: this.hass.states[this.config.entity].attributes['circuit_ratedCurrent'];
     const usedChargerLimit = Math.min(
@@ -93,7 +89,7 @@ export class ChargerCard extends LitElement {
     return usedChargerLimit;
   }
 
-  get image(): string {
+  private get image(): string {
     const imgselected = this.config.chargerImage || cconst.DEFAULTIMAGE;
 
     const chargerImage = cconst.CHARGER_IMAGES.find(({ name }) => {
@@ -114,67 +110,67 @@ export class ChargerCard extends LitElement {
     return this.config.customImage;
   }
 
-  get customCardTheme(): string {
+  private get customCardTheme(): string {
     if (this.config.customCardTheme === undefined) {
       return cconst.DEFAULT_CUSTOMCARDTHEME;
     }
     return this.config.customCardTheme;
   }
 
-  get showLeds(): boolean {
+  private get showLeds(): boolean {
     if (this.config.show_leds === undefined) {
       return true;
     }
     return this.config.show_leds;
   }
 
-  get showName(): boolean {
+  private get showName(): boolean {
     if (this.config.show_name === undefined) {
       return true;
     }
     return this.config.show_name;
   }
 
-  get showStatus(): boolean {
+  private get showStatus(): boolean {
     if (this.config.show_status === undefined) {
       return true;
     }
     return this.config.show_status;
   }
 
-  get showStats(): boolean {
+  private get showStats(): boolean {
     if (this.config.show_stats === undefined) {
       return true;
     }
     return this.config.show_stats;
   }
 
-  get showCollapsibles(): boolean {
+  private get showCollapsibles(): boolean {
     if (this.config.show_collapsibles === undefined) {
       return true;
     }
     return this.config.show_collapsibles;
   }
 
-  get showToolbar(): boolean {
+  private get showToolbar(): boolean {
     if (this.config.show_toolbar === undefined) {
       return true;
     }
     return this.config.show_toolbar;
   }
 
-  get compactView(): boolean {
+  private get compactView(): boolean {
     if (this.config.compact_view === undefined) {
       return false;
     }
     return this.config.compact_view;
   }
 
-  get entityBasename(): string {
+  private get entityBasename(): string {
     return this.config.entity === undefined ? '': this.config.entity.split('.')[1].replace(cconst.STATUS_ENTITY_BASE, '');
   }
 
-  getEntityId(entityBase: string): string | undefined {
+  private getEntityId(entityBase: string): string | undefined {
     try {
       return entityBase.split('.')[0] + '.' + this.entityBasename + '_' + entityBase.split('.')[1];
     } catch (err) {
@@ -182,7 +178,7 @@ export class ChargerCard extends LitElement {
     }
   }
 
-  getEntityBase(entityId: string): string | undefined{
+  private getEntityBase(entityId: string): string | undefined{
     try {
       return entityId.split('.')[0] + '.' + entityId.split('.')[1].replace(this.entityBasename + '_', '');
     } catch (err) {
@@ -190,7 +186,7 @@ export class ChargerCard extends LitElement {
     }
   }
 
-  getEntities() {
+  private getEntities() {
     const cableLocked = this.getEntity(cconst.ENTITIES.cableLocked);
     const cableLockedPermanently = this.getEntity(cconst.ENTITIES.cableLockedPermanently);
     const chargingState = this.getEntity(cconst.ENTITIES.chargingState);
@@ -246,7 +242,7 @@ export class ChargerCard extends LitElement {
     };
   }
 
-  getEntity(entityBase) {
+  private getEntity(entityBase) {
     try {
       const entityId = this.getEntityId(entityBase)
 
@@ -256,7 +252,7 @@ export class ChargerCard extends LitElement {
     }
   }
 
-  getEntityState(entity) {
+  private getEntityState(entity) {
     try {
       return entity.state;
     } catch (err) {
@@ -264,23 +260,15 @@ export class ChargerCard extends LitElement {
     }
   }
 
-  getEntityAttribute(entityBase, attribute) {
+  private getEntityAttribute(entityBase, attribute) {
     try {
       return entityBase.attributes[attribute];
     } catch (err) {
       return undefined;
     }
   }
-  /**
-  getEntityAttributes(entity_base) {
-    try {
-      return this.hass.states[this.getEntityId(entity_base)].attributes;
-    } catch (err) {
-      return null;
-    }
-  } */
 
-  getStatsDefault(state: string) {
+  private getStatsDefault(state: string) {
     switch (state) {
       case cconst.CHARGERSTATUS.STANDBY_1: {
         return [
@@ -405,7 +393,7 @@ export class ChargerCard extends LitElement {
     return [];
   }
 
-  setConfig(config) {
+  setConfig(config:KebaChargerCardConfig) {
     if (!config.entity) {
       throw new Error(localize('error.missing_entity'));
     }
@@ -429,7 +417,7 @@ export class ChargerCard extends LitElement {
     }
   }
 
-  handleMore(entity): void {
+  private handleMore(entity): void {
     if (entity && entity.entity_id) {
       fireEvent(
         this,
@@ -451,7 +439,7 @@ export class ChargerCard extends LitElement {
     }
   }
 
-  setServiceData(service, isRequest, e): void {
+  private setServiceData(service, isRequest, e): void {
     switch (service) {
       case cconst.SERVICES.chargerMaxCurrent: {
         const current = e.target.getAttribute('value');
@@ -476,7 +464,7 @@ export class ChargerCard extends LitElement {
     }
   }
 
-  callService(service, isRequest = true, options = {}) {
+  private callService(service, isRequest = true, options = {}) {
     this.hass.callService(this.chargerDomain, service, {
       ...options,
     });
@@ -499,12 +487,12 @@ export class ChargerCard extends LitElement {
     };
   }*/
 
-  imageLed(state: string, smartCharging: string): string {
+  private imageLed(state: string, smartCharging: string): string {
     const chargingMode = smartCharging == 'on' ? 'smart': 'normal';
     return cconst.LEDIMAGES[chargingMode][state] || cconst.LEDIMAGES[chargingMode]['DEFAULT'];
   }
 
-  renderImage(state): TemplateResult | void {
+  private renderImage(state): TemplateResult | void {
     let compactview = '';
     if (this.compactView) {
       compactview = '-compact';
@@ -523,9 +511,7 @@ export class ChargerCard extends LitElement {
     `;
   }
 
-  renderLeds(state): TemplateResult | void {
-    console.log(state);
-
+  private renderLeds(state): TemplateResult | void {
     if (this.showLeds) {
       let compactview = '';
       if (this.compactView) {
@@ -537,14 +523,13 @@ export class ChargerCard extends LitElement {
         <img
           class="charger led${compactview}"
           src="${this.imageLed(state, smartCharging)}"
-          @action=${this._handleAction}
         />
       `;
     }
     return html``;
   }
 
-  renderStats(state): TemplateResult | void {
+  private renderStats(state): TemplateResult | void {
     /* SHOW DATATABLE */
     if (!this.showStats) {
       return html``;
@@ -563,7 +548,7 @@ export class ChargerCard extends LitElement {
     `;
   }
 
-  renderStatsList(statsList): TemplateResult | void {
+  private renderStatsList(statsList): TemplateResult | void {
     return statsList.map(({ entityId, attribute, calcValue, unit, subtitle }) => {
       if (!entityId && !attribute && !calcValue) {
         return html``;
@@ -579,7 +564,7 @@ export class ChargerCard extends LitElement {
     });
   }
 
-  renderStatsHtml(value, unit, subtitle, entity): TemplateResult | void {
+  private renderStatsHtml(value, unit, subtitle, entity): TemplateResult | void {
     return html`
       <div class="stats-block" @click="${() => this.handleMore(entity)}"
         ?more-info="true">
@@ -590,7 +575,7 @@ export class ChargerCard extends LitElement {
     `;
   }
 
-  renderName(): TemplateResult | void {
+  private renderName(): TemplateResult | void {
     //    const { name, site_name } = this.getAttributes(this.entity);
     if (!this.showName) {
       return html``;
@@ -608,7 +593,7 @@ export class ChargerCard extends LitElement {
     `;
   }
 
-  renderStatus(): TemplateResult | void {
+  private renderStatus(): TemplateResult | void {
     if (!this.showStatus) {
       return html``;
     }
@@ -630,46 +615,8 @@ export class ChargerCard extends LitElement {
     `;
   }
 
-  renderCollapsibleConfig(): TemplateResult | void {
-    /* SHOW COLLAPSIBLES */
-    if (!this.showCollapsibles) {
-      return html``;
-    }
 
-    const {
-      cableLocked,
-      cableLockedPermanently,
-      enableIdleCurrent,
-      isEnabled,
-      smartCharging,
-      //    updateAvailable,
-    } = this.getEntities();
-    //    let updateAvailableState = this.getEntityState(updateAvailable) || 'off';
-    const localizedClickForConfig = localize('common.click_for_config');
-
-    return html`
-      <div class="wrap-collabsible">
-        <input id="collapsible" class="toggle" type="checkbox" />
-        <label for="collapsible" class="lbl-toggle">
-          <div class="tooltip-right">
-            <ha-icon icon="mdi:cog"></ha-icon>
-            <span class="tooltiptext-right">${localizedClickForConfig}</span>
-          </div>
-        </label>
-        <div class="collapsible-content">
-          <div class="content-inner">
-            ${this.renderCollapsibleItems(isEnabled, 'Enabled')}
-            ${this.renderCollapsibleItems(enableIdleCurrent, 'Idle Current')}
-            ${this.renderCollapsibleItems(cableLockedPermanently, 'Permanently Locked')}
-            ${this.renderCollapsibleItems(cableLocked, 'Locked')}
-            ${this.renderCollapsibleItems(smartCharging, 'Smart Charging')}
-          </div>
-        </div>
-      </div>
-    `;
-  }
-
-  renderCollapsibleInfo(): TemplateResult | void {
+  private renderCollapsibleInfo(): TemplateResult | void {
     /* SHOW COLLAPSIBLES */
     if (!this.showCollapsibles) {
       return html``;
@@ -700,11 +647,7 @@ export class ChargerCard extends LitElement {
         <div class="collapsible-content-info">
           <div class="content-inner-info">
             ${this.renderCollapsibleItems(isOnline, localize('common.online'))}
-            ${this.renderCollapsibleItems(voltage, localize('common.voltage'), true)}
             ${this.renderCollapsibleItems(totalPower, localize('common.power'))}
-            ${this.renderCollapsibleItems(inCurrent, localize('common.charger_current'), true)}
-            ${this.renderCollapsibleItems(circuitCurrent, localize('common.circuit_current'), true)}
-            ${this.renderCollapsibleItems(energyPerHour, localize('common.energy_per_hour'))}
             ${this.renderCollapsibleItems(sessionEnergy, localize('charger_status.sessionEnergy'))}
             ${this.renderCollapsibleItems(energyLifetime, localize('common.lifetime_energy'), true)}
           </div>
@@ -713,78 +656,11 @@ export class ChargerCard extends LitElement {
     `;
   }
 
-  renderCollapsibleLimits(): TemplateResult | void {
-    /* SHOW COLLAPSIBLES */
-    if (!this.showCollapsibles) {
-      return html``;
-    }
 
-    const {
-      maxChargerCurrent,
-      maxCircuitCurrent,
-      dynamicChargerCurrent,
-      dynamicCircuitCurrent,
-      offlineCircuitCurrent,
-    } = this.getEntities();
-    const localizedClickForLimits = localize('common.click_for_limits');
 
-    return html`
-      <div class="wrap-collabsible-lim">
-        <input id="collapsible-lim" class="toggle-lim" type="checkbox" />
-        <label for="collapsible-lim" class="lbl-toggle-lim">
-          <div class="tooltip-right">
-            <ha-icon icon="mdi:speedometer"></ha-icon>
-            <span class="tooltiptext-right">${localizedClickForLimits}</span>
-          </div>
-        </label>
-        <div class="collapsible-content-lim">
-          <div class="content-inner-lim">
-            ${this.renderCollapsibleDropDownItems(
-              maxChargerCurrent,
-              cconst.SERVICES.chargerMaxCurrent,
-              undefined,
-              'Max Charger Limit',
-              true,
-            )}
-            ${this.renderCollapsibleDropDownItems(
-              dynamicChargerCurrent,
-              cconst.SERVICES.chargerDynCurrent,
-              undefined,
-              'Dyn Charger Limit',
-              true,
-            )}
-            ${this.renderCollapsibleDropDownItems(
-              maxCircuitCurrent,
-              cconst.SERVICES.circuitMaxCurrent,
-              undefined,
-              'Max Circuit Limit',
-              true,
-            )}
-            ${this.renderCollapsibleDropDownItems(
-              dynamicCircuitCurrent,
-              cconst.SERVICES.circuitDynCurrent,
-              undefined,
-              'Dyn Circuit Limit',
-              true,
-            )}
-            ${this.renderCollapsibleDropDownItems(
-              offlineCircuitCurrent,
-              cconst.SERVICES.circuitOfflineCurrent,
-              undefined,
-              'Offline Limit',
-              true,
-            )}
-          </div>
-        </div>
-      </div>
-    `;
-  }
-
-  renderCollapsibleItems(entity, tooltip, round = false): TemplateResult | void {
+  private renderCollapsibleItems(entity, tooltip, round = false): TemplateResult | void {
     if (entity === null || entity === undefined) {
-      return html`
-        x
-      `;
+      return html``;
     }
 
     const value = round ? Math.round(this.getEntityState(entity)): this.getEntityState(entity);
@@ -802,7 +678,7 @@ export class ChargerCard extends LitElement {
       </div>
     `;
   }
-
+/*
   renderCollapsibleServiceItems(entity, service, text, icon, tooltip, isRequest = true, options = {}): TemplateResult | void {
     let useIcon = icon;
     if (icon === null || icon === undefined) {
@@ -818,9 +694,9 @@ export class ChargerCard extends LitElement {
         </div>
       </div>
     `;
-  }
+  }*/
 
-  renderCollapsibleDropDownItems(entity, service, icon, tooltip, isRequest = true): TemplateResult | void {
+  private renderCollapsibleDropDownItems(entity, service, icon, tooltip, isRequest = true): TemplateResult | void {
     if (entity === null || entity === undefined) {
       return html``;
     }
@@ -856,14 +732,14 @@ export class ChargerCard extends LitElement {
     `;
   }
 
-  renderInfoItemsLeft(): TemplateResult | void {
+  private renderInfoItemsLeft(): TemplateResult | void {
     const { isOnline } = this.getEntities();
     return html`
       ${this.renderInfoItem(isOnline, localize('common.online'))}
     `;
   }
 
-  renderInfoItemsRight(): TemplateResult | void {
+  private renderInfoItemsRight(): TemplateResult | void {
     const { cableLocked, totalPower, voltage } = this.getEntities();
     const plugIcon = cableLocked && cableLocked.state == 'on' ? 'mdi:power-plug' : 'mdi:power-plug-off'
     return html`
@@ -873,7 +749,7 @@ export class ChargerCard extends LitElement {
     `;
   }
 
-  renderInfoItemsCompact(): TemplateResult | void {
+  private renderInfoItemsCompact(): TemplateResult | void {
     const { totalPower, voltage } = this.getEntities();
     return html`
       ${this.renderInfoItem(voltage, localize('common.voltage'), true)}
@@ -881,7 +757,7 @@ export class ChargerCard extends LitElement {
     `;
   }
 
-  renderInfoItem(entity, tooltip, round = false): TemplateResult | void {
+  private renderInfoItem(entity, tooltip, round = false): TemplateResult | void {
     if (entity === null || entity === undefined) {
       return html``;
     }
@@ -901,7 +777,7 @@ export class ChargerCard extends LitElement {
     `;
   }
 
-  renderIcon(entity): TemplateResult | void {
+  private renderIcon(entity): TemplateResult | void {
     const entityId = entity.entity_id;
     const base = this.getEntityBase(entityId);
     const icon =
@@ -916,25 +792,19 @@ export class ChargerCard extends LitElement {
     return icon;
   }
 
-  renderToolbar(state: string): TemplateResult | void {
+  private renderToolbar(state: string): TemplateResult | void {
     /* SHOW TOOLBAR */
     if (!this.showToolbar) {
       return html``;
     }
 
-    /* CUSTOM BUTTONS FROM CONFIG */
-    const { actions = [] } = this.config;
-    const customButtons = actions.map(({ name, service, icon, serviceData }) => {
-      return this.renderToolbarButton(service, icon, name, serviceData);
-    });
 
     let stateButtons = html``;
 
     /* STATE BUTTONS */
     switch (state) {
       case cconst.CHARGERSTATUS.STANDBY_1: {
-        stateButtons = html``;
-        break;
+        return html``;
       }
       case cconst.CHARGERSTATUS.PAUSED_2: {
         stateButtons = html`
@@ -964,8 +834,7 @@ export class ChargerCard extends LitElement {
         break;
       }
       case cconst.CHARGERSTATUS.ERROR_5: {
-        stateButtons = html``;
-        break;
+        return html``;
       }
       case cconst.CHARGERSTATUS.CONNECTED_6: {
         stateButtons = html`
@@ -979,12 +848,11 @@ export class ChargerCard extends LitElement {
       <div class="toolbar">
         ${stateButtons}
         <div class="fill-gap"></div>
-        ${customButtons}
       </div>
     `;
   }
 
-  renderToolbarButton(service, icon, text, serviceData = {}, isRequest = true): TemplateResult | void {
+  private renderToolbarButton(service, icon, text, serviceData = {}, isRequest = true): TemplateResult | void {
     let useText = '';
     try {
       useText = localize(text);
@@ -1003,7 +871,7 @@ export class ChargerCard extends LitElement {
     `;
   }
 
-  renderCompact(): TemplateResult | void {
+  private renderCompact(): TemplateResult | void {
     const state = this.status; //  this.entity;
     return html`
       <ha-card>
@@ -1024,7 +892,7 @@ export class ChargerCard extends LitElement {
     `;
   }
 
-  renderFull(): TemplateResult | void {
+  private renderFull(): TemplateResult | void {
     const state = this.status; //this.entity;
 
     return html`
@@ -1042,7 +910,7 @@ export class ChargerCard extends LitElement {
             ${this.renderName()} ${this.renderStatus()}
           </div>
 
-          ${this.renderCollapsibleConfig()} ${this.renderCollapsibleInfo()} ${this.renderCollapsibleLimits()}
+          ${this.renderCollapsibleInfo()}
           ${this.renderStats(state)}
         </div>
 
@@ -1051,7 +919,7 @@ export class ChargerCard extends LitElement {
     `;
   }
 
-  renderCustomCardTheme(): TemplateResult | void {
+  private renderCustomCardTheme(): TemplateResult | void {
     switch (this.customCardTheme) {
       case 'theme_custom': {
         break;
