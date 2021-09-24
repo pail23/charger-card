@@ -1,9 +1,9 @@
 {
   "status": {
     "disconnected": "Getrennt",
-    "awaiting_start": "Pausiert oder warte auf Start",
+    "awaiting_start": "Pausiert",
     "charging": "Laden",
-    "completed": "Fertig oder warte auf Auto",
+    "completed": "Fertig",
     "error": "Fehler",
     "ready_to_charge": "Bereit zum Laden"
   },

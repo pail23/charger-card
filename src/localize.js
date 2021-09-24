@@ -2,14 +2,10 @@
 // https://github.com/custom-cards/boilerplate-card/blob/master/src/localize/localize.ts
 
 import * as en from './translations/en.json';
-import * as nb from './translations/nb.json';
-import * as sv from './translations/sv.json';
 import * as de from './translations/de.json';
 
 var languages = {
   en,
-  nb,
-  sv,
   de,
 };
 

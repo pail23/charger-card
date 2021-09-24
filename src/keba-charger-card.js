@@ -1063,12 +1063,35 @@ class ChargerCard extends LitElement {
       }
       case cconst.CHARGERSTATUS.PAUSED_2: {
         stateButtons = html`
-          ${this.renderToolbarButton('disable', 'hass:stop', 'common.stop')}
           ${this.renderToolbarButton(
             'enable',
-            'hass:play-pause',
-            'common.continue'
-          )}
+            'mdi:play',
+            'common.start'
+        )}
+        ${this.renderToolbarButton(
+          'set_current',
+          'mdi:play-box-multiple',
+          'common.start',
+          {
+            current: 10,
+          }
+        )}
+        ${this.renderToolbarButton(
+          'set_current',
+          'mdi:animation-play',
+          'common.start',
+          {
+            current: 25,
+          }
+        )}
+        ${this.renderToolbarButton(
+          'set_current',
+          'mdi:play-speed',
+          'common.start',
+          {
+            current: 25,
+          }
+        )}
         `;
         break;
       }
@@ -1080,7 +1103,7 @@ class ChargerCard extends LitElement {
       }
       case cconst.CHARGERSTATUS.READY_4: {
         stateButtons = html`
-          ${this.renderToolbarButton('disable', 'hass:stop', 'common.stop')}
+          ${this.renderToolbarButton('enable', 'hass:play', 'common.start')}
         `;
         break;
       }
