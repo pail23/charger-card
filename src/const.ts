@@ -1,4 +1,15 @@
-export const VERSION = '0.0.12';
+import * as imageGeneric from './img/keba.png'; //'./img/charger_generic_223x302.png';
+
+import * as ledOff from './img/charger_leds_bg.gif';
+import * as ledWhite2 from './img/charger_leds_white_2.gif';
+import * as ledWhiteAll from './img/charger_leds_white_all.gif';
+import * as ledWhiteFlashing from './img/charger_leds_white_flashing.gif';
+import * as ledBlue2 from './img/charger_leds_blue_2.gif';
+import * as ledBlueAll from './img/charger_leds_blue_all.gif';
+import * as ledBlueFlashing from './img/charger_leds_blue_flashing.gif';
+import * as ledRedFlashing from './img/charger_leds_red_flashing.gif';
+
+export const CARD_VERSION = '0.0.2';
 
 export const CHARGERDOMAIN = 'keba';
 export const STATUS_ENTITY_BASE = '_status';
@@ -14,22 +25,22 @@ export const CHARGERSTATUS = {
 
 export const LEDIMAGES = {
   normal: {
-    DEFAULT: ledOff,
-    disconnected: ledWhite2,
-    awaiting_start: ledWhiteAll,
-    charging: ledWhiteFlashing,
-    completed: ledWhiteAll,
-    error: ledRedFlashing,
-    ready_to_charge: ledWhiteAll,
+    DEFAULT: ledOff.default,
+    disconnected: ledWhite2.default,
+    awaitingStart: ledWhiteAll.default,
+    charging: ledWhiteFlashing.default,
+    completed: ledWhiteAll.default,
+    error: ledRedFlashing.default,
+    readyToCharge: ledWhiteAll.default,
   },
   smart: {
-    DEFAULT: ledOff,
-    disconnected: ledBlue2,
-    awaiting_start: ledBlueAll,
-    charging: ledBlueFlashing,
-    completed: ledBlueAll,
-    error: ledRedFlashing,
-    ready_to_charge: ledBlueAll,
+    DEFAULT: ledOff.default,
+    disconnected: ledBlue2.default,
+    awaitingStart: ledBlueAll.default,
+    charging: ledBlueFlashing.default,
+    completed: ledBlueAll.default,
+    error: ledRedFlashing.default,
+    readyToCharge: ledBlueAll.default,
   },
 };
 
@@ -68,19 +79,8 @@ export const SERVICES = {
   circuitOfflineCurrent: 'set_charger_circuit_offline_limit',
 };
 
-import imageGeneric from './img/keba.png'; //'./img/charger_generic_223x302.png';
-
 export const DEFAULTIMAGE = 'Generic';
-export const CHARGER_IMAGES = [{ name: 'Generic', img: imageGeneric }];
-
-import ledOff from './img/charger_leds_bg.gif';
-import ledWhite2 from './img/charger_leds_white_2.gif';
-import ledWhiteAll from './img/charger_leds_white_all.gif';
-import ledWhiteFlashing from './img/charger_leds_white_flashing.gif';
-import ledBlue2 from './img/charger_leds_blue_2.gif';
-import ledBlueAll from './img/charger_leds_blue_all.gif';
-import ledBlueFlashing from './img/charger_leds_blue_flashing.gif';
-import ledRedFlashing from './img/charger_leds_red_flashing.gif';
+export const CHARGER_IMAGES = [{ name: 'Generic', img: imageGeneric.default }];
 
 export const ICONS = {
   'binary_sensor.plug': 'mdi:lock',

@@ -1,4 +1,4 @@
-import { css } from 'lit-element';
+import { css } from 'lit';
 
 export default css`
   :host {
@@ -20,9 +20,7 @@ export default css`
   }
 
   .preview {
-    background: var(
-      --custom-card-background-color
-    ); //var(--custom-primary-color);
+    background: var(--custom-card-background-color); //var(--custom-primary-color);
     cursor: pointer;
     overflow: hidden;
     position: relative;
@@ -32,9 +30,7 @@ export default css`
   }
 
   .preview-compact {
-    background: var(
-      --custom-card-background-color
-    ); //var(--custom-primary-color);
+    background: var(--custom-card-background-color); //var(--custom-primary-color);
     cursor: pointer;
     overflow: hidden;
     position: relative;
@@ -325,9 +321,7 @@ export default css`
   }
 
   .status ha-circular-progress {
-    --mdc-theme-primary: var(
-      --custom-card-background-color
-    ); /* hack to override the color */
+    --mdc-theme-primary: var(--custom-card-background-color); /* hack to override the color */
     min-width: 24px;
     width: 24px;
     height: 24px;
