@@ -11,8 +11,13 @@ import * as ledRedFlashing from './img/charger_leds_red_flashing.gif';
 
 export const CARD_VERSION = '0.0.2';
 
-export const CHARGERDOMAIN = 'keba';
+export const SCRIPT_DOMAIN = 'script';
 export const STATUS_ENTITY_BASE = '_status';
+
+export const SCRIPT_KEBA_AUTO = 'keba_auto';
+export const SCRIPT_KEBA_FAST= 'keba_fast';
+export const SCRIPT_KEBA_SLOW = 'keba_slow';
+export const SCRIPT_KEBA_OFF = 'keba_off';
 
 export const CHARGERSTATUS = {
   STANDBY_1: 'disconnected',

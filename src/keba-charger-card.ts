@@ -1,4 +1,4 @@
-import { LitElement, html, TemplateResult, CSSResultGroup } from 'lit';
+import { LitElement, html, TemplateResult, CSSResultGroup, PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators';
 import {
   HomeAssistant,
@@ -51,9 +51,9 @@ export class ChargerCard extends LitElement {
   }
 
 
-  get chargerDomain(): string {
+  get scriptDomain(): string {
     if (this.config.domain === undefined) {
-      return cconst.CHARGERDOMAIN;
+      return cconst.SCRIPT_DOMAIN;
     }
     return this.config.domain;
   }
@@ -404,7 +404,7 @@ export class ChargerCard extends LitElement {
     return 2;
   }
 
-  shouldUpdate(changedProps) {
+  shouldUpdate(changedProps: PropertyValues) {
     return hasConfigOrEntityChanged(this, changedProps, true); //TODO: Probably not efficient to force update here?
   }
 
@@ -465,7 +465,7 @@ export class ChargerCard extends LitElement {
   }
 
   private callService(service, isRequest = true, options = {}) {
-    this.hass.callService(this.chargerDomain, service, {
+    this.hass.callService(this.scriptDomain, service, {
       ...options,
     });
 
@@ -624,12 +624,8 @@ export class ChargerCard extends LitElement {
 
     const {
       isOnline,
-      voltage,
       totalPower,
-      circuitCurrent,
-      inCurrent,
       sessionEnergy,
-      energyPerHour,
       energyLifetime,
     } = this.getEntities();
 
@@ -808,28 +804,23 @@ export class ChargerCard extends LitElement {
       }
       case cconst.CHARGERSTATUS.PAUSED_2: {
         stateButtons = html`
-          ${this.renderToolbarButton('enable', 'mdi:play', 'common.start')}
-          ${this.renderToolbarButton('set_current', 'mdi:play-box-multiple', 'common.start', {
-            current: 10,
-          })}
-          ${this.renderToolbarButton('set_current', 'mdi:animation-play', 'common.start', {
-            current: 25,
-          })}
-          ${this.renderToolbarButton('set_current', 'mdi:play-speed', 'common.start', {
-            current: 25,
-          })}
+          ${this.renderToolbarButton(cconst.SCRIPT_KEBA_FAST, 'mdi:play-box-multiple', 'common.start')}
+          ${this.renderToolbarButton(cconst.SCRIPT_KEBA_SLOW, 'mdi:animation-play', 'common.start')}
+          ${this.renderToolbarButton(cconst.SCRIPT_KEBA_AUTO, 'mdi:play-speed', 'common.start')}
         `;
         break;
       }
       case cconst.CHARGERSTATUS.CHARGING_3: {
         stateButtons = html`
-          ${this.renderToolbarButton('disable', 'hass:stop', 'common.stop')}
+          ${this.renderToolbarButton(cconst.SCRIPT_KEBA_OFF, 'hass:stop', 'common.stop')}
         `;
         break;
       }
       case cconst.CHARGERSTATUS.READY_4: {
         stateButtons = html`
-          ${this.renderToolbarButton('enable', 'hass:play', 'common.start')}
+          ${this.renderToolbarButton(cconst.SCRIPT_KEBA_FAST, 'mdi:play-box-multiple', 'common.start')}
+          ${this.renderToolbarButton(cconst.SCRIPT_KEBA_SLOW, 'mdi:animation-play', 'common.start')}
+          ${this.renderToolbarButton(cconst.SCRIPT_KEBA_AUTO, 'mdi:play-speed', 'common.start')}
         `;
         break;
       }
@@ -838,7 +829,7 @@ export class ChargerCard extends LitElement {
       }
       case cconst.CHARGERSTATUS.CONNECTED_6: {
         stateButtons = html`
-          ${this.renderToolbarButton('disable', 'hass:stop', 'common.stop')}
+          ${this.renderToolbarButton(cconst.SCRIPT_KEBA_OFF, 'hass:stop', 'common.stop')}
         `;
         break;
       }
