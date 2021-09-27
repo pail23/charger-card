@@ -10,7 +10,9 @@
   "common": {
     "name": "Charger Card",
     "description": "Charger card ermöglicht es dir, deinen Laderoboter zu steuern.",
-    "start": "Start",
+    "start_fast": "Start (schnell)",
+    "start_slow": "Start (langsam)",
+    "start_smart": "Start (smart)",
     "continue": "Weiter",
     "pause": "Pause",
     "stop": "Stopp",
@@ -33,6 +35,7 @@
   },
   "editor": {
     "entity": "Entity (Erforderlich)",
+    "smartChargingEntity": "Entity für Smart Charging",
     "chargerImage": "Bild und Farbe des Ladegeräts",
     "customImage": "Benutzerdefiniertes Bild (Optional - überschreibt das Bild des Ladegeräts)",
     "theme": "Farbschema",

@@ -12,6 +12,7 @@ export interface KebaChargerCardConfig extends LovelaceCardConfig {
   type: string;
   name?: string;
   entity?: string;
+  smartChargingEntity?: string;
   chargerImage?: string;
   domain?: string;
   customCardTheme?: string;

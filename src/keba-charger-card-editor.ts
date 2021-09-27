@@ -20,6 +20,7 @@ export class ChargerCardEditor extends LitElement implements LovelaceCardEditor 
 
     if (!this._config.entity) {
       this._config.entity = this.getEntitiesByType('binary_sensor')[0] || '';
+      this._config.smartChargingEntity = this.getEntitiesByType('input_boolean')[0] || '';
       fireEvent(this, 'config-changed', { config: this._config });
     }
     this.loadCardHelpers();
@@ -36,6 +37,14 @@ export class ChargerCardEditor extends LitElement implements LovelaceCardEditor 
   get _entity(): string {
     if (this._config) {
       return this._config.entity || '';
+    }
+
+    return '';
+  }
+
+  get _smartChargingEntity(): string {
+    if (this._config) {
+      return this._config.smartChargingEntity || '';
     }
 
     return '';
@@ -125,147 +134,169 @@ export class ChargerCardEditor extends LitElement implements LovelaceCardEditor 
       eid => eid.substr(0, eid.indexOf('.')) === 'binary_sensor',
     );
 
+    const smartChargingEntities = Object.keys(this.hass.states).filter(
+      eid => eid.substr(0, eid.indexOf('.')) === 'input_boolean',
+    );
+
     return html`
       <div class="card-config">
 
         <paper-dropdown-menu label="${localize('editor.entity')}" @value-changed=${
       this._valueChanged
     } .configValue=${'entity'}>
-          <paper-listbox slot="dropdown-content" .selected=${chargerEntities.indexOf(this._entity)}>
-            ${chargerEntities.map(entity => {
-              return html`
-                <paper-item>${entity}</paper-item>
-              `;
-            })}
-          </paper-listbox>
+            <paper-listbox slot="dropdown-content" .selected=${chargerEntities.indexOf(this._entity)}>
+              ${chargerEntities.map(entity => {
+                return html`
+                  <paper-item>${entity}</paper-item>
+                `;
+              })}
+            </paper-listbox>
+        </paper-dropdown-menu>
+
+        <paper-dropdown-menu label="${localize('editor.smartChargingEntity')}" @value-changed=${
+      this._valueChanged
+    } .configValue=${'smartChargingEntity'}>
+            <paper-listbox slot="dropdown-content" .selected=${smartChargingEntities.indexOf(
+              this._smartChargingEntity,
+            )}>
+              ${smartChargingEntities.map(entity => {
+                return html`
+                  <paper-item>${entity}</paper-item>
+                `;
+              })}
+            </paper-listbox>
         </paper-dropdown-menu>
 
         <paper-dropdown-menu label="${localize('editor.theme')}" @value-changed=${
       this._valueChanged
     } .configValue=${'customCardTheme'}>
-          <paper-listbox slot="dropdown-content" selected="${this._customCardTheme}" attr-for-selected="value">
-            ${cconst.CUSTOM_CARD_THEMES.map(customCardTheme => {
-              return html`
-                <paper-item value="${customCardTheme.name}">${customCardTheme.name}</paper-item>
-              `;
-            })}
-          </paper-listbox>
+            <paper-listbox slot="dropdown-content" selected="${this._customCardTheme}" attr-for-selected="value">
+              ${cconst.CUSTOM_CARD_THEMES.map(customCardTheme => {
+                return html`
+                  <paper-item value="${customCardTheme.name}">${customCardTheme.name}</paper-item>
+                `;
+              })}
+            </paper-listbox>
         </paper-dropdown-menu>
 
 
-        <paper-dropdown-menu label="${localize('editor.chargerImage')}" @value-changed=${
+              <paper-dropdown-menu label="${localize('editor.chargerImage')}" @value-changed=${
       this._valueChanged
     } .configValue=${'chargerImage'}>
-          <paper-listbox slot="dropdown-content" selected="${this._chargerImage}" attr-for-selected="value">
-            ${cconst.CHARGER_IMAGES.map(chargerImage => {
-              return html`
-                <paper-item value="${chargerImage.name}">${chargerImage.name}</paper-item>
-              `;
-            })}
-          </paper-listbox>
-        </paper-dropdown-menu>
+                <paper-listbox slot="dropdown-content" selected="${this._chargerImage}" attr-for-selected="value">
+                  ${cconst.CHARGER_IMAGES.map(chargerImage => {
+                    return html`
+                      <paper-item value="${chargerImage.name}">${chargerImage.name}</paper-item>
+                    `;
+                  })}
+                </paper-listbox>
+              </paper-dropdown-menu>
 
 
-        <paper-input label="${localize('editor.customImage')}" .value=${
+              <paper-input label="${localize('editor.customImage')}" .value=${
       this._customImage
     } .configValue=${'customImage'} @value-changed=${this._valueChanged}"></paper-input>
 
-        <p class="option">
+          <p class="option">
+            <ha-switch
+              aria-label=${localize(
+                this.compactView ? 'editor.compact_view_aria_label_off' : 'editor.compact_view_aria_label_on',
+              )}
+              .checked=${this.compactView !== false}
+              .configValue=${'compact_view'}
+              @change=${this._valueChanged}
+            >
+            </ha-switch>
+            ${localize('editor.compact_view')}
+          </p>
+
+          <p class="option">
+            <ha-switch
+              aria-label=${localize(
+                this.showName ? 'editor.show_name_aria_label_off' : 'editor.show_name_aria_label_on',
+              )}
+              .checked=${this.showName}
+              .configValue=${'show_name'}
+              @change=${this._valueChanged}
+            >
+            </ha-switch>
+            ${localize('editor.show_name')}
+          </p>
+
+          <p class="option">
+            <ha-switch
+              aria-label=${localize(
+                this.showLeds ? 'editor.show_leds_aria_label_off' : 'editor.show_leds_aria_label_on',
+              )}
+              .checked=${this.showLeds !== false}
+              .configValue=${'show_leds'}
+              @change=${this._valueChanged}
+            >
+            </ha-switch>
+            ${localize('editor.show_leds')}
+          </p>
+
+
+          <p class="option">
+            <ha-switch
+              aria-label=${localize(
+                this.showStatus ? 'editor.show_status_aria_label_off' : 'editor.show_status_aria_label_on',
+              )}
+              .checked=${this.showStatus !== false}
+              .configValue=${'show_status'}
+              @change=${this._valueChanged}
+            >
+            </ha-switch>
+            ${localize('editor.show_status')}
+          </p>
+
+          <p class="option">
           <ha-switch
             aria-label=${localize(
-              this.compactView ? 'editor.compact_view_aria_label_off' : 'editor.compact_view_aria_label_on',
+              this.showCollapsibles
+                ? 'editor.show_collapsibles_aria_label_off'
+                : 'editor.show_collapsibles_aria_label_on',
             )}
-            .checked=${this.compactView !== false}
-            .configValue=${'compact_view'}
+            .checked=${this.showCollapsibles !== false}
+            .configValue=${'show_collapsibles'}
             @change=${this._valueChanged}
           >
           </ha-switch>
-          ${localize('editor.compact_view')}
+          ${localize('editor.show_collapsibles')}
         </p>
 
-        <p class="option">
-          <ha-switch
-            aria-label=${localize(this.showName ? 'editor.show_name_aria_label_off' : 'editor.show_name_aria_label_on')}
-            .checked=${this.showName}
-            .configValue=${'show_name'}
-            @change=${this._valueChanged}
-          >
-          </ha-switch>
-          ${localize('editor.show_name')}
-        </p>
-
-        <p class="option">
-          <ha-switch
-            aria-label=${localize(this.showLeds ? 'editor.show_leds_aria_label_off' : 'editor.show_leds_aria_label_on')}
-            .checked=${this.showLeds !== false}
-            .configValue=${'show_leds'}
-            @change=${this._valueChanged}
-          >
-          </ha-switch>
-          ${localize('editor.show_leds')}
-        </p>
-
-
-        <p class="option">
-          <ha-switch
-            aria-label=${localize(
-              this.showStatus ? 'editor.show_status_aria_label_off' : 'editor.show_status_aria_label_on',
-            )}
-            .checked=${this.showStatus !== false}
-            .configValue=${'show_status'}
-            @change=${this._valueChanged}
-          >
-          </ha-switch>
-          ${localize('editor.show_status')}
-        </p>
-
-        <p class="option">
-        <ha-switch
-          aria-label=${localize(
-            this.showCollapsibles
-              ? 'editor.show_collapsibles_aria_label_off'
-              : 'editor.show_collapsibles_aria_label_on',
-          )}
-          .checked=${this.showCollapsibles !== false}
-          .configValue=${'show_collapsibles'}
-          @change=${this._valueChanged}
-        >
-        </ha-switch>
-        ${localize('editor.show_collapsibles')}
-      </p>
-
-        <p class="option">
-          <ha-switch
-            aria-label=${localize(
-              this.showStats ? 'editor.show_stats_aria_label_off' : 'editor.show_stats_aria_label_on',
-            )}
-            .checked=${this.showStats}
-            .configValue=${'show_stats'}
-            @change=${this._valueChanged}
-          >
-          </ha-switch>
-          ${localize('editor.show_stats')}
-        </p>
+          <p class="option">
+            <ha-switch
+              aria-label=${localize(
+                this.showStats ? 'editor.show_stats_aria_label_off' : 'editor.show_stats_aria_label_on',
+              )}
+              .checked=${this.showStats}
+              .configValue=${'show_stats'}
+              @change=${this._valueChanged}
+            >
+            </ha-switch>
+            ${localize('editor.show_stats')}
+          </p>
 
 
 
 
-        <p class="option">
-          <ha-switch
-            aria-label=${localize(
-              this.showToolbar ? 'editor.show_toolbar_aria_label_off' : 'editor.show_toolbar_aria_label_on',
-            )}
-            .checked=${this.showToolbar !== false}
-            .configValue=${'show_toolbar'}
-            @change=${this._valueChanged}
-          >
-          </ha-switch>
-          ${localize('editor.show_toolbar')}
-        </p>
+          <p class="option">
+            <ha-switch
+              aria-label=${localize(
+                this.showToolbar ? 'editor.show_toolbar_aria_label_off' : 'editor.show_toolbar_aria_label_on',
+              )}
+              .checked=${this.showToolbar !== false}
+              .configValue=${'show_toolbar'}
+              @change=${this._valueChanged}
+            >
+            </ha-switch>
+            ${localize('editor.show_toolbar')}
+          </p>
 
 
-      </div>
-    `;
+        </div>
+      `;
   }
 
   private _initialize(): void {
@@ -279,7 +310,7 @@ export class ChargerCardEditor extends LitElement implements LovelaceCardEditor 
     this._helpers = await (window as any).loadCardHelpers();
   }
 
-  _valueChanged(ev) {
+  _valueChanged(ev): void {
     if (!this._config || !this.hass) {
       console.log('C: no config');
       return;
@@ -319,5 +350,3 @@ export class ChargerCardEditor extends LitElement implements LovelaceCardEditor 
     `;
   }
 }
-
-//customElements.define('keba-charger-card-editor', ChargerCardEditor);

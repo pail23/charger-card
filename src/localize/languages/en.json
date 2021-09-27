@@ -11,6 +11,9 @@
     "name": "Charger Card",
     "description": "Charger card allows you to control your charging robot.",
     "start": "Start",
+    "start_fast": "Start (fast)",
+    "start_slow": "Start (slow)",
+    "start_smart": "Start (smart)",
     "continue": "Resume",
     "pause": "Pause",
     "stop": "Stop",
@@ -33,6 +36,7 @@
   },
   "editor": {
     "entity": "Entity (Required)",
+    "smartChargingEntity": "Entity for smart charging",
     "chargerImage": "Charger image and color",
     "customImage": "Custom image (Optional - overrides charger image)",
     "theme": "Color theme",
