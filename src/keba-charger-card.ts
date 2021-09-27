@@ -79,14 +79,14 @@ export class ChargerCard extends LitElement {
     READY_4: 'completed',
     ERROR_5: 'error', */
   }
-
+/*
   private get usedChargerLimit(): number {
-    const chargingEntity = this.getEntity(cconst.ENTITIES.chargingState);
-    if (chargingEntity) {
-      return chargingEntity.attributes['max_charging_rate'];
+    const maxChargerCurrentEntity = this.getEntity(cconst.ENTITIES.maxChargerCurrent);
+    if (maxChargerCurrentEntity) {
+      return +maxChargerCurrentEntity.state;
     }
     return 0;
-  }
+  }*/
 
   private get image(): string {
     const imgselected = this.config.chargerImage || cconst.DEFAULTIMAGE;
@@ -277,7 +277,7 @@ export class ChargerCard extends LitElement {
             subtitle: localize('charger_status.sessionEnergy'),
           },
           {
-            calcValue: this.usedChargerLimit,
+            entityId: this.getEntityId(cconst.ENTITIES.maxChargerCurrent),
             unit: 'A',
             subtitle: 'Current Limit',
           },
@@ -291,7 +291,7 @@ export class ChargerCard extends LitElement {
       case cconst.CHARGERSTATUS.PAUSED_2: {
         return [
           {
-            calcValue: this.usedChargerLimit,
+            entityId: this.getEntityId(cconst.ENTITIES.maxChargerCurrent),
             unit: 'A',
             subtitle: 'Current Limit',
           },
@@ -301,7 +301,7 @@ export class ChargerCard extends LitElement {
             subtitle: localize('charger_status.sessionEnergy'),
           },
           {
-            entityId: this.smartChargingEntity ? this.smartChargingEntity.entity_id : '', // this.getEntityId(cconst.ENTITIES.smartCharging),
+            entityId: this.smartChargingEntity ? this.smartChargingEntity.entity_id : '',
             unit: '',
             subtitle: 'Smart Charging',
           },
@@ -315,7 +315,7 @@ export class ChargerCard extends LitElement {
             subtitle: 'Energy',
           },
           {
-            calcValue: this.usedChargerLimit,
+            entityId: this.getEntityId(cconst.ENTITIES.maxChargerCurrent),
             unit: 'A',
             subtitle: 'Current Limit',
           },
@@ -340,7 +340,7 @@ export class ChargerCard extends LitElement {
             subtitle: 'Power',
           },
           {
-            entityId: this.smartChargingEntity ? this.smartChargingEntity.entity_id : '', //this.getEntityId(cconst.ENTITIES.smartCharging),
+            entityId: this.smartChargingEntity ? this.smartChargingEntity.entity_id : '',
             unit: '',
             subtitle: 'Smart Charging',
           },
@@ -354,7 +354,7 @@ export class ChargerCard extends LitElement {
             subtitle: localize('charger_status.sessionEnergy'),
           },
           {
-            calcValue: this.usedChargerLimit,
+            entityId: this.getEntityId(cconst.ENTITIES.maxChargerCurrent),
             unit: 'A',
             subtitle: 'Current Limit',
           },
@@ -368,7 +368,7 @@ export class ChargerCard extends LitElement {
             subtitle: localize('charger_status.sessionEnergy'),
           },
           {
-            calcValue: this.usedChargerLimit,
+            entityId: this.getEntityId(cconst.ENTITIES.maxChargerCurrent),
             unit: 'A',
             subtitle: 'Current Limit',
           },
@@ -382,7 +382,7 @@ export class ChargerCard extends LitElement {
             subtitle: localize('charger_status.sessionEnergy'),
           },
           {
-            calcValue: this.usedChargerLimit,
+            entityId: this.getEntityId(cconst.ENTITIES.maxChargerCurrent),
             unit: 'A',
             subtitle: 'Current Limit',
           },
