@@ -1,4 +1,4 @@
-import * as imageGeneric from './img/keba.png'; //'./img/charger_generic_223x302.png';
+import * as imageGeneric from './img/keba_large.png';
 
 import * as ledOff from './img/charger_leds_bg.gif';
 import * as ledWhite2 from './img/charger_leds_white_2.gif';
@@ -15,7 +15,7 @@ export const SCRIPT_DOMAIN = 'script';
 export const STATUS_ENTITY_BASE = '_status';
 
 export const SCRIPT_KEBA_AUTO = 'keba_auto';
-export const SCRIPT_KEBA_FAST= 'keba_fast';
+export const SCRIPT_KEBA_FAST = 'keba_fast';
 export const SCRIPT_KEBA_SLOW = 'keba_slow';
 export const SCRIPT_KEBA_OFF = 'keba_off';
 

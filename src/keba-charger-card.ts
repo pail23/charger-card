@@ -1,12 +1,7 @@
 import { LitElement, html, TemplateResult, CSSResultGroup, PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators';
-import { HassEntity } from "home-assistant-js-websocket";
-import {
-  HomeAssistant,
-  hasConfigOrEntityChanged,
-  fireEvent,
-  LovelaceCardEditor,
-} from 'custom-card-helpers'; // This is a community maintained npm module with common helper functions/types. https://github.com/custom-cards/custom-card-helpers
+import { HassEntity } from 'home-assistant-js-websocket';
+import { HomeAssistant, hasConfigOrEntityChanged, fireEvent, LovelaceCardEditor } from 'custom-card-helpers'; // This is a community maintained npm module with common helper functions/types. https://github.com/custom-cards/custom-card-helpers
 
 import './keba-charger-card-editor';
 import type { KebaChargerCardConfig } from './types';
@@ -18,9 +13,16 @@ import * as cconst from './const';
 
 console.info(`%cKEBA-CHARGER-CARD ${CARD_VERSION} IS INSTALLED`, 'color: green; font-weight: bold', '');
 
+// This puts your card into the UI card picker dialog
+(window as any).customCards = (window as any).customCards || [];
+(window as any).customCards.push({
+  type: 'keba-charger-card',
+  name: 'Keba Charger Card Card',
+  description: 'A keba charger card for visualizing the status and interacting with your Keba P30',
+});
+
 @customElement('keba-charger-card')
 export class ChargerCard extends LitElement {
-
   static get styles(): CSSResultGroup {
     return styles;
   }
@@ -30,7 +32,7 @@ export class ChargerCard extends LitElement {
   }
 
   public static getStubConfig(entities) {
-    const [chargerEntity] = entities.filter(eid => eid.substr(0, eid.indexOf('.')) === 'binary_sensor');
+    const [chargerEntity] = entities.filter((eid) => eid.substr(0, eid.indexOf('.')) === 'binary_sensor');
 
     return {
       entity: chargerEntity || '',
@@ -48,7 +50,7 @@ export class ChargerCard extends LitElement {
     return this.config.entity != undefined ? this.hass.states[this.config.entity] : undefined;
   }
 
-  get smartChargingEntity(): HassEntity | undefined  {
+  get smartChargingEntity(): HassEntity | undefined {
     return this.config.smartChargingEntity != undefined ? this.hass.states[this.config.smartChargingEntity] : undefined;
   }
 
@@ -79,7 +81,7 @@ export class ChargerCard extends LitElement {
     READY_4: 'completed',
     ERROR_5: 'error', */
   }
-/*
+  /*
   private get usedChargerLimit(): number {
     const maxChargerCurrentEntity = this.getEntity(cconst.ENTITIES.maxChargerCurrent);
     if (maxChargerCurrentEntity) {
@@ -101,7 +103,7 @@ export class ChargerCard extends LitElement {
 
     if (this.config.customImage === undefined || this.config.customImage === '') {
       try {
-        return chargerImage === undefined ? undefined: chargerImage.img;
+        return chargerImage === undefined ? undefined : chargerImage.img;
       } catch (err) {
         return '';
       }
@@ -166,7 +168,9 @@ export class ChargerCard extends LitElement {
   }
 
   private get entityBasename(): string {
-    return this.config.entity === undefined ? '': this.config.entity.split('.')[1].replace(cconst.STATUS_ENTITY_BASE, '');
+    return this.config.entity === undefined
+      ? ''
+      : this.config.entity.split('.')[1].replace(cconst.STATUS_ENTITY_BASE, '');
   }
 
   private getEntityId(entityBase: string): string | undefined {
@@ -177,7 +181,7 @@ export class ChargerCard extends LitElement {
     }
   }
 
-  private getEntityBase(entityId: string): string | undefined{
+  private getEntityBase(entityId: string): string | undefined {
     try {
       return entityId.split('.')[0] + '.' + entityId.split('.')[1].replace(this.entityBasename + '_', '');
     } catch (err) {
@@ -243,9 +247,9 @@ export class ChargerCard extends LitElement {
 
   private getEntity(entityBase) {
     try {
-      const entityId = this.getEntityId(entityBase)
+      const entityId = this.getEntityId(entityBase);
 
-      return entityId === undefined ? undefined: this.hass.states[entityId];
+      return entityId === undefined ? undefined : this.hass.states[entityId];
     } catch (err) {
       return undefined;
     }
@@ -397,24 +401,25 @@ export class ChargerCard extends LitElement {
     return [];
   }
 
-  setConfig(config:KebaChargerCardConfig):void {
+  setConfig(config: KebaChargerCardConfig): void {
     if (!config.entity) {
       throw new Error(localize('error.missing_entity'));
     }
     this.config = config;
   }
 
-  getCardSize():number {
+  getCardSize(): number {
     return 2;
   }
 
-  shouldUpdate(changedProps: PropertyValues):boolean {
+  shouldUpdate(changedProps: PropertyValues): boolean {
     return hasConfigOrEntityChanged(this, changedProps, true); //TODO: Probably not efficient to force update here?
   }
 
-  updated(changedProps):void {
+  updated(changedProps): void {
     if (
-      this.config.entity && changedProps.get('hass') &&
+      this.config.entity &&
+      changedProps.get('hass') &&
       changedProps.get('hass').states[this.config.entity].state !== this.hass.states[this.config.entity].state
     ) {
       this.requestInProgress = false;
@@ -437,7 +442,7 @@ export class ChargerCard extends LitElement {
     }
   }
 
-/*
+  /*
   private setServiceData(service, isRequest, e): void {
     switch (service) {
       case cconst.SERVICES.chargerMaxCurrent: {
@@ -473,7 +478,7 @@ export class ChargerCard extends LitElement {
       this.requestUpdate();
     }
   }
-/*
+  /*
   getAttributes(entity) {
     const { status, state, friendly_name, name, site_name, icon } = entity.attributes;
 
@@ -487,7 +492,7 @@ export class ChargerCard extends LitElement {
   }*/
 
   private imageLed(state: string, smartCharging: boolean): string {
-    const chargingMode = smartCharging  ? 'smart': 'normal';
+    const chargingMode = smartCharging ? 'smart' : 'normal';
     return cconst.LEDIMAGES[chargingMode][state] || cconst.LEDIMAGES[chargingMode]['DEFAULT'];
   }
 
@@ -510,20 +515,21 @@ export class ChargerCard extends LitElement {
     `;
   }
 
-  private renderLeds(state): TemplateResult | void {
+  private renderLeds(state: string): TemplateResult | void {
+    console.log(state);
     if (this.showLeds) {
-      let compactview = '';
+      /* let compactview = '';
       if (this.compactView) {
         compactview = '-compact';
       }
 
-      const smartCharging = this.smartChargingEntity ? this.smartChargingEntity.state == 'on' : false; // this.getEntityState(this.getEntity(cconst.ENTITIES.smartCharging));
-      return html`
-        <img
-          class="charger led${compactview}"
-          src="${this.imageLed(state, smartCharging)}"
-        />
-      `;
+      const smartCharging = this.smartChargingEntity != null ? this.smartChargingEntity.state == 'on' : false; // this.getEntityState(this.getEntity(cconst.ENTITIES.smartCharging));
+      return html` <img class="charger led${compactview}" src="${this.imageLed(state, smartCharging)}" /> `; */
+      if (state === cconst.CHARGERSTATUS.CHARGING_3) {
+        return html`<div class="keba-leds-green"></div>`;
+      } else {
+        return html`<div class="keba-leds-blue"></div>`;
+      }
     }
     return html``;
   }
@@ -540,11 +546,7 @@ export class ChargerCard extends LitElement {
 
     /* DEFAULT DATATABLE */
     const statsList = this.getStatsDefault(state) || [];
-    return html`
-      <div class="stats${compactview}">
-        ${this.renderStatsList(statsList)}
-      </div>
-    `;
+    return html` <div class="stats${compactview}">${this.renderStatsList(statsList)}</div> `;
   }
 
   private renderStatsList(statsList): TemplateResult | void {
@@ -565,8 +567,7 @@ export class ChargerCard extends LitElement {
 
   private renderStatsHtml(value, unit, subtitle, entity): TemplateResult | void {
     return html`
-      <div class="stats-block" @click="${() => this.handleMore(entity)}"
-        ?more-info="true">
+      <div class="stats-block" @click="${() => this.handleMore(entity)}" ?more-info="true">
         <span class="stats-value">${value}</span>
         ${unit}
         <div class="stats-subtitle">${subtitle}</div>
@@ -585,11 +586,7 @@ export class ChargerCard extends LitElement {
       compactview = '-compact';
     }
 
-    return html`
-      <div class="charger-name${compactview}">
-        Keba P30
-      </div>
-    `;
+    return html` <div class="charger-name${compactview}">Keba P30</div> `;
   }
 
   private renderStatus(): TemplateResult | void {
@@ -606,14 +603,11 @@ export class ChargerCard extends LitElement {
 
     return html`
       <div class="status${compactview}">
-        <span class="status-text${compactview}" alt=${localizedStatus}>
-          ${localizedStatus}
-        </span>
+        <span class="status-text${compactview}" alt=${localizedStatus}> ${localizedStatus} </span>
         <ha-circular-progress .active=${this.requestInProgress} size="small"></ha-circular-progress>
       </div>
     `;
   }
-
 
   private renderCollapsibleInfo(): TemplateResult | void {
     /* SHOW COLLAPSIBLES */
@@ -621,17 +615,12 @@ export class ChargerCard extends LitElement {
       return html``;
     }
 
-    const {
-      isOnline,
-      totalPower,
-      sessionEnergy,
-      energyLifetime,
-    } = this.getEntities();
+    const { isOnline, totalPower, sessionEnergy, energyLifetime } = this.getEntities();
 
     const localizedClickForStatus = localize('common.click_for_info');
 
     return html`
-      <div class="wrap-collabsible-info">
+      <div>
         <input id="collapsible-info" class="toggle-info" type="checkbox" />
         <label for="collapsible-info" class="lbl-toggle-info">
           <div class="tooltip-right">
@@ -651,20 +640,16 @@ export class ChargerCard extends LitElement {
     `;
   }
 
-
-
   private renderCollapsibleItems(entity, tooltip, round = false): TemplateResult | void {
     if (entity === null || entity === undefined) {
       return html``;
     }
 
-    const value = round ? Math.round(this.getEntityState(entity)): this.getEntityState(entity);
+    const value = round ? Math.round(this.getEntityState(entity)) : this.getEntityState(entity);
     const icon = this.renderIcon(entity);
-    const  useUnit = this.getEntityAttribute(entity, 'unit_of_measurement');
+    const useUnit = this.getEntityAttribute(entity, 'unit_of_measurement');
     return html`
-      <div class="collapsible-item"
-        @click="${() => this.handleMore(entity)}"
-        ?more-info="true">
+      <div class="collapsible-item" @click="${() => this.handleMore(entity)}" ?more-info="true">
         <div class="tooltip">
           <ha-icon icon="${icon}"></ha-icon>
           <br />${value} ${useUnit}
@@ -675,14 +660,12 @@ export class ChargerCard extends LitElement {
   }
   private renderInfoItemsLeft(): TemplateResult | void {
     const { isOnline } = this.getEntities();
-    return html`
-      ${this.renderInfoItem(isOnline, localize('common.online'))}
-    `;
+    return html` ${this.renderInfoItem(isOnline, localize('common.online'))} `;
   }
 
   private renderInfoItemsRight(): TemplateResult | void {
     const { cableLocked, totalPower, voltage } = this.getEntities();
-    const plugIcon = cableLocked && cableLocked.state == 'on' ? 'mdi:power-plug' : 'mdi:power-plug-off'
+    const plugIcon = cableLocked && cableLocked.state == 'on' ? 'mdi:power-plug' : 'mdi:power-plug-off';
     return html`
       ${this.renderInfoItem(voltage, localize('common.voltage'), true)}
       ${this.renderInfoItem(totalPower, localize('common.power'))}
@@ -706,9 +689,7 @@ export class ChargerCard extends LitElement {
     const useUnit = this.getEntityAttribute(entity, 'unit_of_measurement');
     const icon = this.renderIcon(entity);
     return html`
-      <div class="infoitems-item"
-        @click="${() => this.handleMore(entity)}"
-        ?more-info="true">
+      <div class="infoitems-item" @click="${() => this.handleMore(entity)}" ?more-info="true">
         <div class="tooltip">
           <ha-icon icon="${icon}"></ha-icon>
           ${value} ${useUnit}
@@ -724,7 +705,7 @@ export class ChargerCard extends LitElement {
     const icon =
       this.getEntityAttribute(entity, 'icon') !== undefined
         ? this.getEntityAttribute(entity, 'icon')
-        : (base === undefined ? null: cconst.ICONS[base]) || 'mdi:cancel';
+        : (base === undefined ? null : cconst.ICONS[base]) || 'mdi:cancel';
     /**const domainIcon =
       this.getEntityAttribute(entity, 'device_class') == !null
         ? domainIcon(this.getEntityAttribute(entity, 'device_class'), this.getEntityState(entity))
@@ -738,7 +719,6 @@ export class ChargerCard extends LitElement {
     if (!this.showToolbar) {
       return html``;
     }
-
 
     let stateButtons = html``;
 
@@ -779,7 +759,8 @@ export class ChargerCard extends LitElement {
         stateButtons = html`
           ${this.renderToolbarButton(cconst.SCRIPT_KEBA_FAST, 'mdi:fast-forward', 'common.start_fast')}
           ${this.renderToolbarButton(cconst.SCRIPT_KEBA_SLOW, 'mdi:play', 'common.start_slow')}
-          ${this.renderToolbarButton(cconst.SCRIPT_KEBA_AUTO, 'mdi:play-speed', 'common.start_smart')}        `;
+          ${this.renderToolbarButton(cconst.SCRIPT_KEBA_AUTO, 'mdi:play-speed', 'common.start_smart')}
+        `;
         break;
       }
     }
@@ -818,9 +799,7 @@ export class ChargerCard extends LitElement {
         <div class="preview-compact">
           ${this.renderImage(state)}
 
-          <div class="metadata">
-            ${this.renderName()} ${this.renderStatus()}
-          </div>
+          <div class="metadata">${this.renderName()} ${this.renderStatus()}</div>
 
           <div class="infoitems">${this.renderInfoItemsCompact()}</div>
 
@@ -846,12 +825,9 @@ export class ChargerCard extends LitElement {
 
           ${this.renderImage(state)}
 
-         <div class="metadata">
-            ${this.renderName()} ${this.renderStatus()}
-          </div>
+          <div class="metadata">${this.renderStatus()}</div>
 
-          ${this.renderCollapsibleInfo()}
-          ${this.renderStats(state)}
+          ${this.renderCollapsibleInfo()} ${this.renderStats(state)}
         </div>
 
         ${this.renderToolbar(state)}
@@ -910,7 +886,6 @@ export class ChargerCard extends LitElement {
   }
 
   render(): TemplateResult | void {
-
     this.renderCustomCardTheme();
 
     if (!this.entity) {
@@ -918,9 +893,7 @@ export class ChargerCard extends LitElement {
         <ha-card>
           <div class="preview not-available">
             <div class="metadata">
-              <div class="not-available">
-                ${localize('common.not_available')}
-              </div>
+              <div class="not-available">${localize('common.not_available')}</div>
             </div>
           </div>
         </ha-card>
@@ -934,4 +907,3 @@ export class ChargerCard extends LitElement {
     }
   }
 }
-

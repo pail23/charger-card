@@ -116,7 +116,7 @@ export default css`
   .charger {
     display: block;
     max-width: 90%;
-    max-height: 200px;
+    max-height: 300px;
     image-rendering: crisp-edges;
     margin: 30px auto 20px auto;
 
@@ -140,6 +140,42 @@ export default css`
 
     // border-color: red;
     // border-style: dashed;
+  }
+
+  .keba-leds-green {
+    position: absolute;
+    left: 221px;
+    top: 109px;
+    background: lime;
+    line-height: 12px;
+    margin-left: 3px;
+    animation: blink 2s infinite;
+    width: 42px;
+    height: 3px;
+  }
+
+  .keba-leds-blue {
+    position: absolute;
+    left: 221px;
+    top: 109px;
+    background: blue;
+    line-height: 12px;
+    margin-left: 3px;
+    animation: blink 2s infinite;
+    width: 42px;
+    height: 3px;
+  }
+
+  @keyframes blink {
+    0% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
   }
 
   .charger.led {
@@ -239,7 +275,7 @@ export default css`
     // spacing: 0px 0 40
     // text-align: right;
     padding: 5px;
-    font-weight: bold;
+    font-weight: normal;
     color: var(--custom-text-color);
 
     // border: 1px;
@@ -283,7 +319,7 @@ export default css`
   .status-text {
     color: var(--custom-text-color);
     white-space: nowrap;
-    font-weight: bold;
+    font-weight: normal;
     text-overflow: ellipsis;
     overflow: hidden;
     margin-left: calc(20px + 9px); /* size + margin of spinner */
@@ -293,7 +329,7 @@ export default css`
   .status-text-compact {
     color: var(--custom-text-color);
     white-space: nowrap;
-    font-weight: bold;
+    font-weight: normal;
     text-overflow: ellipsis;
     overflow: hidden;
     // margin-left: calc(20px + 9px); /* size + margin of spinner */
@@ -364,9 +400,9 @@ export default css`
     display: block;
     margin: 20px auto;
     position: relative;
-    top: -50px;
+    top: -10px;
 
-    // border-color: pink;
+    border-color: pink;
     // border-style: dashed;
   }
 
@@ -412,7 +448,7 @@ export default css`
 
   .stats-value {
     font-size: 20px;
-    font-weight: bold;
+    font-weight: normal;
   }
 
   ha-icon {
@@ -640,7 +676,7 @@ export default css`
     text-align: center;
     align-items: center;
     padding: 5px;
-    // font-weight: bold;
+    // font-weight: normal;
     // border: 1px;
     // border-style: dotted;
     justify-content: center;
