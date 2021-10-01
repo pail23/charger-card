@@ -142,30 +142,25 @@ export default css`
     // border-style: dashed;
   }
 
-  .keba-leds-green {
+  .keba-leds {
     position: absolute;
     left: 221px;
     top: 109px;
     background: lime;
-    line-height: 12px;
-    margin-left: 3px;
+    margin-right: auto;
+    margin-left: auto;
     animation: blink 3s infinite;
     width: 42px;
     height: 3px;
     border-radius: 2px;
   }
 
+  .keba-leds-green {
+    background: lime;
+  }
+
   .keba-leds-blue {
-    position: absolute;
-    left: 221px;
-    top: 109px;
     background: blue;
-    line-height: 12px;
-    margin-left: 3px;
-    animation: blink 3s infinite;
-    width: 42px;
-    height: 3px;
-    border-radius: 2px;
   }
 
   @keyframes blink {
