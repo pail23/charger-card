@@ -149,9 +149,10 @@ export default css`
     background: lime;
     line-height: 12px;
     margin-left: 3px;
-    animation: blink 2s infinite;
+    animation: blink 3s infinite;
     width: 42px;
     height: 3px;
+    border-radius: 2px;
   }
 
   .keba-leds-blue {
@@ -161,9 +162,10 @@ export default css`
     background: blue;
     line-height: 12px;
     margin-left: 3px;
-    animation: blink 2s infinite;
+    animation: blink 3s infinite;
     width: 42px;
     height: 3px;
+    border-radius: 2px;
   }
 
   @keyframes blink {
