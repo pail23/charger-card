@@ -142,11 +142,13 @@ export default css`
     // border-style: dashed;
   }
 
-  .keba-leds {
+  .keba-leds-container {
     position: absolute;
-    left: 221px;
     top: 109px;
-    background: lime;
+    width: 100%;
+  }
+
+  .keba-leds {
     margin-right: auto;
     margin-left: auto;
     animation: blink 3s infinite;

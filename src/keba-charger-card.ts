@@ -525,11 +525,13 @@ export class ChargerCard extends LitElement {
 
       const smartCharging = this.smartChargingEntity != null ? this.smartChargingEntity.state == 'on' : false; // this.getEntityState(this.getEntity(cconst.ENTITIES.smartCharging));
       return html` <img class="charger led${compactview}" src="${this.imageLed(state, smartCharging)}" /> `; */
+      let color = '';
       if (state === cconst.CHARGERSTATUS.CHARGING_3) {
-        return html`<div class="keba-leds keba-leds-green"></div>`;
+        color = 'green';
       } else {
-        return html`<div class="keba-leds keba-leds-blue"></div>`;
+        color = 'blue';
       }
+      return html`<div class="keba-leds-container"><div class="keba-leds keba-leds-${color}"></div></div>`;
     }
     return html``;
   }
