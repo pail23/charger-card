@@ -1,5 +1,6 @@
 import { LitElement, html, TemplateResult, CSSResultGroup, PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators';
+import { mdiFastForward, mdiPlay, mdiStop, mdiPlaySpeed } from '@mdi/js';
 import { HassEntity } from 'home-assistant-js-websocket';
 import { HomeAssistant, hasConfigOrEntityChanged, fireEvent, LovelaceCardEditor } from 'custom-card-helpers'; // This is a community maintained npm module with common helper functions/types. https://github.com/custom-cards/custom-card-helpers
 
@@ -731,26 +732,26 @@ export class ChargerCard extends LitElement {
       }
       case cconst.CHARGERSTATUS.PAUSED_2: {
         stateButtons = html`
-          ${this.renderToolbarButton(cconst.SCRIPT_KEBA_OFF, 'hass:stop', 'common.stop')}
-          ${this.renderToolbarButton(cconst.SCRIPT_KEBA_FAST, 'mdi:fast-forward', 'common.start_fast')}
-          ${this.renderToolbarButton(cconst.SCRIPT_KEBA_SLOW, 'mdi:play', 'common.start_slow')}
+          ${this.renderToolbarButton(cconst.SCRIPT_KEBA_OFF, mdiStop, 'common.stop')}
+          ${this.renderToolbarButton(cconst.SCRIPT_KEBA_FAST, mdiFastForward, 'common.start_fast')}
+          ${this.renderToolbarButton(cconst.SCRIPT_KEBA_SLOW, mdiPlay, 'common.start_slow')}
         `;
         break;
       }
       case cconst.CHARGERSTATUS.CHARGING_3: {
         stateButtons = html`
-          ${this.renderToolbarButton(cconst.SCRIPT_KEBA_OFF, 'hass:stop', 'common.stop')}
-          ${this.renderToolbarButton(cconst.SCRIPT_KEBA_FAST, 'mdi:fast-forward', 'common.start_fast')}
-          ${this.renderToolbarButton(cconst.SCRIPT_KEBA_SLOW, 'mdi:play', 'common.start_slow')}
-          ${this.renderToolbarButton(cconst.SCRIPT_KEBA_AUTO, 'mdi:play-speed', 'common.start_smart')}
+          ${this.renderToolbarButton(cconst.SCRIPT_KEBA_OFF, mdiStop, 'common.stop')}
+          ${this.renderToolbarButton(cconst.SCRIPT_KEBA_FAST, mdiFastForward, 'common.start_fast')}
+          ${this.renderToolbarButton(cconst.SCRIPT_KEBA_SLOW, mdiPlay, 'common.start_slow')}
+          ${this.renderToolbarButton(cconst.SCRIPT_KEBA_AUTO, mdiPlaySpeed, 'common.start_smart')}
         `;
         break;
       }
       case cconst.CHARGERSTATUS.READY_4: {
         stateButtons = html`
-          ${this.renderToolbarButton(cconst.SCRIPT_KEBA_FAST, 'mdi:fast-forward', 'common.start_fast')}
-          ${this.renderToolbarButton(cconst.SCRIPT_KEBA_SLOW, 'mdi:play', 'common.start_slow')}
-          ${this.renderToolbarButton(cconst.SCRIPT_KEBA_AUTO, 'mdi:play-speed', 'common.start_smart')}
+          ${this.renderToolbarButton(cconst.SCRIPT_KEBA_FAST, mdiFastForward, 'common.start_fast')}
+          ${this.renderToolbarButton(cconst.SCRIPT_KEBA_SLOW, mdiPlay, 'common.start_slow')}
+          ${this.renderToolbarButton(cconst.SCRIPT_KEBA_AUTO, mdiPlaySpeed, 'common.start_smart')}
         `;
         break;
       }
@@ -759,9 +760,9 @@ export class ChargerCard extends LitElement {
       }
       case cconst.CHARGERSTATUS.CONNECTED_6: {
         stateButtons = html`
-          ${this.renderToolbarButton(cconst.SCRIPT_KEBA_FAST, 'mdi:fast-forward', 'common.start_fast')}
-          ${this.renderToolbarButton(cconst.SCRIPT_KEBA_SLOW, 'mdi:play', 'common.start_slow')}
-          ${this.renderToolbarButton(cconst.SCRIPT_KEBA_AUTO, 'mdi:play-speed', 'common.start_smart')}
+          ${this.renderToolbarButton(cconst.SCRIPT_KEBA_FAST, mdiFastForward, 'common.start_fast')}
+          ${this.renderToolbarButton(cconst.SCRIPT_KEBA_SLOW, mdiPlay, 'common.start_slow')}
+          ${this.renderToolbarButton(cconst.SCRIPT_KEBA_AUTO, mdiPlaySpeed, 'common.start_smart')}
         `;
         break;
       }
@@ -785,9 +786,9 @@ export class ChargerCard extends LitElement {
     return html`
       <div class="tooltip">
         <ha-icon-button
-          icon="${icon}"
-          title="${useText}"
-          @click="${() => this.callService(service, isRequest, serviceData)}"
+          .path=${icon}
+          .label=${useText}
+          @click=${() => this.callService(service, isRequest, serviceData)}
         ></ha-icon-button>
         <span class="tooltiptext">${useText}</span>
       </div>

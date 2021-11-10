@@ -15,9 +15,10 @@
   "author": "Paul Frank <pail@gmx.net>",
   "license": "MIT",
   "dependencies": {
+    "@mdi/js": "^6.4.95",
     "custom-card-helpers": "^1.8.0",
-    "home-assistant-js-websocket": "^5.11.1",
-    "lit": "^2.0.0"
+    "home-assistant-js-websocket": "^5.11.2",
+    "lit": "^2.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.15.5",
@@ -41,7 +42,7 @@
     "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-typescript2": "^0.30.0",
     "rollup-plugin-uglify": "^6.0.4",
-    "typescript": "^4.4.3"
+    "typescript": "^4.4.4"
   },
   "scripts": {
     "start": "rollup -c rollup.config.dev.js --watch",
