@@ -329,7 +329,7 @@ const $=t=>e=>"function"==typeof e?((t,e)=>(window.customElements.define(t,e),e)
 
   .keba-leds-container {
     position: absolute;
-    top: 109px;
+    top: 100px;
     width: 100%;
   }
 
@@ -338,8 +338,8 @@ const $=t=>e=>"function"==typeof e?((t,e)=>(window.customElements.define(t,e),e)
     margin-left: auto;
     animation: blink 3s infinite;
     width: 42px;
-    height: 3px;
-    border-radius: 2px;
+    //height: 10px;
+    // border-radius: 2px;
   }
 
   .keba-leds-green {
@@ -1098,7 +1098,29 @@ const $=t=>e=>"function"==typeof e?((t,e)=>(window.customElements.define(t,e),e)
         @click="${()=>this.handleMore(this.entity)}"
         ?more-info="true"
       />${this.renderLeds(t)}
-    `:G``}renderLeds(t){if(console.log(t),this.showLeds){let e="";return e=t===Kt?"green":"blue",G`<div class="keba-leds-container"><div class="keba-leds keba-leds-${e}"></div></div>`}return G``}renderStats(t){if(!this.showStats)return G``;let e="";this.compactView&&(e="-compact");const i=this.getStatsDefault(t)||[];return G` <div class="stats${e}">${this.renderStatsList(i)}</div> `}renderStatsList(t){return t.map((({entityId:t,attribute:e,calcValue:i,unit:r,subtitle:o})=>{if(!(t||e||i))return G``;if(i)return this.renderStatsHtml(i,r,o,this.hass.states[t]);try{const i=e?this.hass.states[t].attributes[e]:this.hass.states[t].state;return this.renderStatsHtml(i,r,o,this.hass.states[t])}catch(t){return null}}))}renderStatsHtml(t,e,i,r){return G`
+    `:G``}renderLeds(t){if(console.log(t),this.showLeds){let e="";return e=t===Kt?"0, 255, 0":"82, 182, 255",G`<div class="keba-leds-container">
+        <div class="keba-leds">
+          <svg height="10" width="42">
+            <defs>
+              <radialGradient id="c1" cx="0.5" cy="0.5" r="0.5">
+                <stop offset="0" stop-color="rgba(${e}, 1)" />
+                <stop offset="0.5" stop-color="rgba(${e}, 0.5)" />
+                <stop offset="1" stop-color="rgba(${e},0)" />
+              </radialGradient>
+            </defs>
+
+            <circle cx="6" cy="5" r="3" fill="url(#c1)" />
+            <circle cx="10" cy="5" r="3" fill="url(#c1)" />
+            <circle cx="14" cy="5" r="3" fill="url(#c1)" />
+            <circle cx="18" cy="5" r="3" fill="url(#c1)" />
+            <circle cx="22" cy="5" r="3" fill="url(#c1)" />
+            <circle cx="26" cy="5" r="3" fill="url(#c1)" />
+            <circle cx="30" cy="5" r="3" fill="url(#c1)" />
+            <circle cx="34" cy="5" r="3" fill="url(#c1)" />
+            <circle cx="38" cy="5" r="3" fill="url(#c1)" />
+          </svg>
+        </div>
+      </div>`}return G``}renderStats(t){if(!this.showStats)return G``;let e="";this.compactView&&(e="-compact");const i=this.getStatsDefault(t)||[];return G` <div class="stats${e}">${this.renderStatsList(i)}</div> `}renderStatsList(t){return t.map((({entityId:t,attribute:e,calcValue:i,unit:r,subtitle:o})=>{if(!(t||e||i))return G``;if(i)return this.renderStatsHtml(i,r,o,this.hass.states[t]);try{const i=e?this.hass.states[t].attributes[e]:this.hass.states[t].state;return this.renderStatsHtml(i,r,o,this.hass.states[t])}catch(t){return null}}))}renderStatsHtml(t,e,i,r){return G`
       <div class="stats-block" @click="${()=>this.handleMore(r)}" ?more-info="true">
         <span class="stats-value">${t}</span>
         ${e}

@@ -515,17 +515,10 @@ export class ChargerCard extends LitElement {
       />${this.renderLeds(state)}
     `;
   }
-
+  /*
   private renderLeds(state: string): TemplateResult | void {
     console.log(state);
     if (this.showLeds) {
-      /* let compactview = '';
-      if (this.compactView) {
-        compactview = '-compact';
-      }
-
-      const smartCharging = this.smartChargingEntity != null ? this.smartChargingEntity.state == 'on' : false; // this.getEntityState(this.getEntity(cconst.ENTITIES.smartCharging));
-      return html` <img class="charger led${compactview}" src="${this.imageLed(state, smartCharging)}" /> `; */
       let color = '';
       if (state === cconst.CHARGERSTATUS.CHARGING_3) {
         color = 'green';
@@ -533,6 +526,43 @@ export class ChargerCard extends LitElement {
         color = 'blue';
       }
       return html`<div class="keba-leds-container"><div class="keba-leds keba-leds-${color}"></div></div>`;
+    }
+    return html``;
+  }*/
+
+  private renderLeds(state: string): TemplateResult | void {
+    console.log(state);
+    if (this.showLeds) {
+      let color = '';
+
+      if (state === cconst.CHARGERSTATUS.CHARGING_3) {
+        color = '0, 255, 0';
+      } else {
+        color = '82, 182, 255';
+      }
+      return html`<div class="keba-leds-container">
+        <div class="keba-leds">
+          <svg height="10" width="42">
+            <defs>
+              <radialGradient id="c1" cx="0.5" cy="0.5" r="0.5">
+                <stop offset="0" stop-color="rgba(${color}, 1)" />
+                <stop offset="0.5" stop-color="rgba(${color}, 0.5)" />
+                <stop offset="1" stop-color="rgba(${color},0)" />
+              </radialGradient>
+            </defs>
+
+            <circle cx="6" cy="5" r="3" fill="url(#c1)" />
+            <circle cx="10" cy="5" r="3" fill="url(#c1)" />
+            <circle cx="14" cy="5" r="3" fill="url(#c1)" />
+            <circle cx="18" cy="5" r="3" fill="url(#c1)" />
+            <circle cx="22" cy="5" r="3" fill="url(#c1)" />
+            <circle cx="26" cy="5" r="3" fill="url(#c1)" />
+            <circle cx="30" cy="5" r="3" fill="url(#c1)" />
+            <circle cx="34" cy="5" r="3" fill="url(#c1)" />
+            <circle cx="38" cy="5" r="3" fill="url(#c1)" />
+          </svg>
+        </div>
+      </div>`;
     }
     return html``;
   }

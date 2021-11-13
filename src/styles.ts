@@ -144,7 +144,7 @@ export default css`
 
   .keba-leds-container {
     position: absolute;
-    top: 109px;
+    top: 100px;
     width: 100%;
   }
 
@@ -153,8 +153,8 @@ export default css`
     margin-left: auto;
     animation: blink 3s infinite;
     width: 42px;
-    height: 3px;
-    border-radius: 2px;
+    //height: 10px;
+    // border-radius: 2px;
   }
 
   .keba-leds-green {
