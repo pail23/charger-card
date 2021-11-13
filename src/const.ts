@@ -1,5 +1,5 @@
 import * as imageGeneric from './img/keba_large.png';
-
+/*
 import * as ledOff from './img/charger_leds_bg.gif';
 import * as ledWhite2 from './img/charger_leds_white_2.gif';
 import * as ledWhiteAll from './img/charger_leds_white_all.gif';
@@ -8,7 +8,7 @@ import * as ledBlue2 from './img/charger_leds_blue_2.gif';
 import * as ledBlueAll from './img/charger_leds_blue_all.gif';
 import * as ledBlueFlashing from './img/charger_leds_blue_flashing.gif';
 import * as ledRedFlashing from './img/charger_leds_red_flashing.gif';
-
+*/
 export const CARD_VERSION = '0.0.2';
 
 export const SCRIPT_DOMAIN = 'script';
@@ -27,7 +27,7 @@ export const CHARGERSTATUS = {
   ERROR_5: 'error',
   CONNECTED_6: 'ready_to_charge',
 };
-
+/*
 export const LEDIMAGES = {
   normal: {
     DEFAULT: ledOff.default,
@@ -47,7 +47,7 @@ export const LEDIMAGES = {
     error: ledRedFlashing.default,
     readyToCharge: ledBlueAll.default,
   },
-};
+};*/
 
 export const ENTITIES = {
   cableLocked: 'binary_sensor.plug', // keba done

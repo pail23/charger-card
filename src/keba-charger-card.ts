@@ -490,12 +490,12 @@ export class ChargerCard extends LitElement {
       site_name,
       icon,
     };
-  }*/
+  }
 
   private imageLed(state: string, smartCharging: boolean): string {
     const chargingMode = smartCharging ? 'smart' : 'normal';
     return cconst.LEDIMAGES[chargingMode][state] || cconst.LEDIMAGES[chargingMode]['DEFAULT'];
-  }
+  }*/
 
   private renderImage(state): TemplateResult | void {
     let compactview = '';
