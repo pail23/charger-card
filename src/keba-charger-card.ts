@@ -542,7 +542,7 @@ export class ChargerCard extends LitElement {
       }
       return html`<div class="keba-leds-container">
         <div class="keba-leds">
-          <svg height="10" width="42">
+          <svg height="10" width="60">
             <defs>
               <radialGradient id="c1" cx="0.5" cy="0.5" r="0.5">
                 <stop offset="0" stop-color="rgba(${color}, 1)" />
@@ -560,6 +560,11 @@ export class ChargerCard extends LitElement {
             <circle cx="30" cy="5" r="3" fill="url(#c1)" />
             <circle cx="34" cy="5" r="3" fill="url(#c1)" />
             <circle cx="38" cy="5" r="3" fill="url(#c1)" />
+            <circle cx="42" cy="5" r="3" fill="url(#c1)" />
+            <circle cx="46" cy="5" r="3" fill="url(#c1)" />
+            <circle cx="50" cy="5" r="3" fill="url(#c1)" />
+            <circle cx="54" cy="5" r="3" fill="url(#c1)" />
+            <circle cx="58" cy="5" r="3" fill="url(#c1)" />
           </svg>
         </div>
       </div>`;
